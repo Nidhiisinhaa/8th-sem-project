@@ -1,0 +1,5 @@
+/* App-level global styles (minimal, design system is in index.css) */
+#root {
+  width: 100%;
+  min-height: 100vh;
+}

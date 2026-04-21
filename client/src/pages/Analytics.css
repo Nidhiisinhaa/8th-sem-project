@@ -1,0 +1,98 @@
+.analytics-page {
+  max-width: 1200px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Legend Inline */
+.legend-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 12px;
+}
+
+/* ==================== MODEL INFO ==================== */
+.model-info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.model-card {
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  text-align: center;
+  transition: all var(--transition-normal);
+}
+
+.model-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--text-muted);
+  box-shadow: var(--shadow-sm);
+}
+
+.model-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+}
+
+.model-icon.blue { background: var(--accent-blue-glow); color: var(--accent-blue); }
+.model-icon.green { background: var(--accent-green-glow); color: var(--accent-green); }
+.model-icon.purple { background: var(--accent-purple-glow); color: var(--accent-purple); }
+.model-icon.cyan { background: var(--accent-cyan-glow); color: var(--accent-cyan); }
+
+.model-card h4 {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.model-value {
+  font-size: 2rem;
+  font-weight: 800;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.model-card p {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 1024px) {
+  .model-info-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .model-info-grid {
+    grid-template-columns: 1fr;
+  }
+}

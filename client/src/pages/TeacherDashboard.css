@@ -1,0 +1,211 @@
+.teacher-dashboard {
+  max-width: 1200px;
+}
+
+.red-badge {
+  background: var(--accent-red-glow) !important;
+  color: var(--accent-red) !important;
+  border-color: rgba(239, 68, 68, 0.2) !important;
+}
+
+/* ==================== STUDENTS TABLE ==================== */
+.students-table-card {
+  margin-top: 0;
+}
+
+.table-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.table-search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  transition: all var(--transition-fast);
+}
+
+.table-search:focus-within {
+  border-color: var(--accent-blue);
+}
+
+.table-search svg {
+  color: var(--text-muted);
+}
+
+.table-search input {
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  width: 160px;
+}
+
+.table-search input::placeholder {
+  color: var(--text-muted);
+}
+
+.filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  transition: all var(--transition-fast);
+}
+
+.filter-btn:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.students-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.students-table th {
+  text-align: left;
+  padding: 12px 14px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.students-table td {
+  padding: 14px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.students-table tbody tr {
+  transition: background var(--transition-fast);
+}
+
+.students-table tbody tr:hover {
+  background: var(--bg-card-hover);
+}
+
+.student-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.student-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  flex-shrink: 0;
+}
+
+.student-name-cell span {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.roll-badge {
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  background: var(--bg-input);
+  border-radius: var(--radius-sm);
+  font-family: monospace;
+}
+
+/* Risk Bar */
+.risk-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.risk-bar-bg {
+  width: 80px;
+  height: 6px;
+  background: var(--bg-input);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.risk-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.6s ease;
+}
+
+.risk-bar-fill.low { background: var(--accent-green); }
+.risk-bar-fill.medium { background: var(--accent-amber); }
+.risk-bar-fill.high { background: var(--accent-red); }
+
+.risk-value {
+  font-size: 0.8rem;
+  font-weight: 600;
+  min-width: 24px;
+}
+
+.risk-value.low { color: var(--accent-green); }
+.risk-value.medium { color: var(--accent-amber); }
+.risk-value.high { color: var(--accent-red); }
+
+/* Grade Badge */
+.grade-badge {
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.grade-badge.low { background: var(--accent-green-glow); color: var(--accent-green); }
+.grade-badge.medium { background: var(--accent-amber-glow); color: var(--accent-amber); }
+.grade-badge.high { background: var(--accent-red-glow); color: var(--accent-red); }
+
+/* View Button */
+.view-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-input);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.view-btn:hover {
+  background: var(--accent-blue-glow);
+  color: var(--accent-blue);
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+  .table-actions {
+    flex-direction: column;
+  }
+  
+  .table-search input {
+    width: 120px;
+  }
+}
