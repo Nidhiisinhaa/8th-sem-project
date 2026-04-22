@@ -10,7 +10,7 @@
   left: 0;
   top: 0;
   height: 100vh;
-  background: var(--bg-secondary);
+  background:  #18231f6b;
   border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
@@ -66,13 +66,15 @@
   padding: 16px 12px;
   display: flex;
   flex-direction: column;
+  background-color: #18231f53;
+  color: white;
   gap: 4px;
 }
 
 .nav-label {
   font-size: 0.7rem;
   font-weight: 600;
-  color: var(--text-muted);
+  color: white;
   letter-spacing: 1.5px;
   padding: 8px 12px;
   margin-bottom: 4px;
@@ -84,20 +86,20 @@
   gap: 12px;
   padding: 12px 14px;
   border-radius: var(--radius-md);
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.5);
   transition: all var(--transition-fast);
   white-space: nowrap;
   position: relative;
 }
 
 .nav-item:hover {
-  background: var(--bg-card);
-  color: var(--text-primary);
+  background: #3fad8157;
+  color: #e0e8e5;
 }
 
 .nav-item.active {
-  background: var(--accent-blue-glow);
-  color: var(--accent-blue);
+  background: rgba(114, 156, 121, 0.553);
+  color: black;
   font-weight: 500;
 }
 
@@ -109,7 +111,7 @@
   transform: translateY(-50%);
   width: 3px;
   height: 60%;
-  background: var(--accent-blue);
+  background: yellow;
   border-radius: 0 4px 4px 0;
 }
 
@@ -166,7 +168,7 @@
   width: 36px;
   height: 36px;
   border-radius: var(--radius-sm);
-  background: var(--bg-card);
+  background: #4a706246;
   color: var(--text-secondary);
   display: flex;
   align-items: center;
@@ -183,7 +185,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: var(--bg-input);
+  background: #6baa911b;;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-full);
   padding: 8px 16px;
@@ -192,8 +194,8 @@
 }
 
 .search-box:focus-within {
-  border-color: var(--accent-blue);
-  box-shadow: 0 0 0 3px var(--accent-blue-glow);
+  border-color: #22c55e;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
 }
 
 .search-box svg {
@@ -284,11 +286,11 @@
     width: 260px;
     position: fixed;
   }
-  
+
   .main-area {
     margin-left: 0;
   }
-  
+
   .search-box {
     display: none;
   }

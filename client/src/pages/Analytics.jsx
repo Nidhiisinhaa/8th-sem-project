@@ -1,7 +1,7 @@
-import { 
+import {
   TrendingUp, Users, Award, BookOpen, BarChart3
 } from 'lucide-react';
-import { 
+import {
   LineChart, Line, BarChart, Bar, PieChart, Pie, Cell,
   ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid, Legend,
   AreaChart, Area
@@ -57,7 +57,7 @@ export default function Analytics() {
       <div className="page-header">
         <div>
           <h1>Analytics & Insights</h1>
-          <p className="page-subtitle">Comprehensive data analysis and model performance</p>
+          <p className="page-subtitle">Real-time academic forecasting</p>
         </div>
       </div>
 

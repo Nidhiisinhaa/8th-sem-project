@@ -1,6 +1,6 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { 
-  LayoutDashboard, Users, Upload, BarChart3, 
+import {
+  LayoutDashboard, Users, Upload, BarChart3,
   GraduationCap, LogOut, Menu, X, Bell, Search,
   ChevronRight, BookOpen
 } from 'lucide-react';
