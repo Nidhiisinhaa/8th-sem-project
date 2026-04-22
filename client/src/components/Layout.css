@@ -279,6 +279,9 @@
   padding: 28px;
   animation: fadeIn 0.3s ease;
 }
+.test-y-ignore{
+  padding: 0%;
+}
 
 /* ==================== RESPONSIVE ==================== */
 @media (max-width: 768px) {
