@@ -19,15 +19,15 @@
   padding: 60px 40px;
   border-radius: var(--radius-xl);
   border: 2px dashed var(--border-color);
-  background: var(--bg-card);
+  background: rgba(39, 58, 39, 0.441);
   transition: all var(--transition-normal);
   cursor: pointer;
 }
 
 .drop-zone:hover,
 .drop-zone.dragging {
-  border-color: var(--accent-blue);
-  background: var(--accent-blue-glow);
+  border-color: var(--accent-green);
+  background: var(--accent-green-glow);
 }
 
 .drop-zone.dragging {
@@ -38,8 +38,8 @@
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: var(--accent-blue-glow);
-  color: var(--accent-blue);
+  background: var(--accent-green-glow);
+  color: var(--accent-green);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -65,11 +65,11 @@
 .file-type-badge {
   padding: 4px 12px;
   border-radius: var(--radius-full);
-  background: var(--bg-input);
-  border: 1px solid var(--border-color);
+  background: var(--accent-green-glow);
+  border: 1px solid green;
   font-size: 0.7rem;
   font-weight: 600;
-  color: var(--text-muted);
+  color: yellow;
   font-family: monospace;
 }
 
@@ -89,15 +89,15 @@
 
 .browse-btn:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-glow-blue);
+  box-shadow: var(--shadow-glow-yellow);
 }
 
 /* Format Guide */
 .format-guide {
   padding: 28px;
   border-radius: var(--radius-lg);
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background:  rgba(39, 58, 39, 0.441);
+  border: 1px solid green;
 }
 
 .guide-header {
@@ -105,7 +105,7 @@
   align-items: center;
   gap: 10px;
   margin-bottom: 12px;
-  color: var(--accent-purple);
+  color: yellow;
 }
 
 .guide-header h3 {
@@ -133,7 +133,7 @@
   padding: 10px 14px;
   font-size: 0.72rem;
   font-weight: 600;
-  color: var(--text-muted);
+  color: yellowgreen;
   text-transform: uppercase;
   letter-spacing: 0.8px;
   border-bottom: 1px solid var(--border-color);
@@ -148,7 +148,7 @@
 
 .format-table td:first-child {
   font-family: monospace;
-  color: var(--accent-cyan);
+  color: rgba(255, 255, 0, 0.639);
   font-weight: 500;
 }
 

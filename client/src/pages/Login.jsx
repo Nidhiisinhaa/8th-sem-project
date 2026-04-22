@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { BookOpen, Mail, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
+import { BookOpen, Mail, Lock, ArrowRight, Eye, EyeOff, GraduationCap, UserCheck } from 'lucide-react';
 import { useState } from 'react';
 import './Login.css';
 
@@ -11,8 +11,8 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Navigate to appropriate dashboard based on role
-    window.location.href = role === 'teacher' 
-      ? '/dashboard/teacher' 
+    window.location.href = role === 'teacher'
+      ? '/dashboard/teacher'
       : '/dashboard/student';
   };
 
@@ -79,12 +79,12 @@ export default function Login() {
                 <label>Password</label>
                 <div className="input-wrapper">
                   <Lock size={18} />
-                  <input 
-                    type={showPassword ? 'text' : 'password'} 
-                    placeholder="Enter your password" 
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="Enter your password"
                   />
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     className="eye-btn"
                     onClick={() => setShowPassword(!showPassword)}
                   >
@@ -96,19 +96,19 @@ export default function Login() {
               <div className="form-group">
                 <label>Role</label>
                 <div className="role-selector">
-                  <button 
+                  <button
                     type="button"
                     className={`role-btn ${role === 'student' ? 'active' : ''}`}
                     onClick={() => setRole('student')}
                   >
-                    🎓 Student
+                    <GraduationCap size={20} className="role-icon"/>    Student
                   </button>
-                  <button 
+                  <button
                     type="button"
                     className={`role-btn ${role === 'teacher' ? 'active' : ''}`}
                     onClick={() => setRole('teacher')}
                   >
-                    👨‍🏫 Teacher
+                    <UserCheck size={20} className="role-icon"/>   Teacher
                   </button>
                 </div>
               </div>
@@ -122,12 +122,12 @@ export default function Login() {
             <div className="form-footer">
               <p>
                 {isSignUp ? 'Already have an account?' : "Don't have an account?"}
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="toggle-btn"
                   onClick={() => setIsSignUp(!isSignUp)}
                 >
-                  {isSignUp ? 'Sign In' : 'Sign Up'}
+                  {isSignUp ? 'Log In' : 'Sign Up'}
                 </button>
               </p>
             </div>

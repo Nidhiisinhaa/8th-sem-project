@@ -22,7 +22,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  background: var(--bg-input);
+  background: rgba(187, 228, 187, 0.623);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
   padding: 6px 12px;
@@ -30,7 +30,7 @@
 }
 
 .table-search:focus-within {
-  border-color: var(--accent-blue);
+  border-color: var(--accent-green);
 }
 
 .table-search svg {
@@ -54,9 +54,9 @@
   gap: 6px;
   padding: 6px 14px;
   border-radius: var(--radius-sm);
-  background: var(--bg-input);
+  background:rgba(187, 228, 187, 0.623);
   border: 1px solid var(--border-color);
-  color: var(--text-secondary);
+  color: var(--text-muted);
   font-size: 0.8rem;
   transition: all var(--transition-fast);
 }
@@ -195,8 +195,13 @@
 }
 
 .view-btn:hover {
-  background: var(--accent-blue-glow);
-  color: var(--accent-blue);
+  background: var(--accent-green-glow);
+  color: var(--accent-green);
+}
+
+.meta-badge{
+background: rgba(187, 228, 187, 0.623);
+color: white;
 }
 
 /* ==================== RESPONSIVE ==================== */
@@ -204,7 +209,7 @@
   .table-actions {
     flex-direction: column;
   }
-  
+
   .table-search input {
     width: 120px;
   }
