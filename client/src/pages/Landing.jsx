@@ -92,6 +92,8 @@ export default function Landing() {
           <Zap size={14} />
           <span>Powered by Machine Learning</span>
         </div> */}
+        <br/>
+        <br/>
 
         <h1 className="hero-title animate-fade-in-up delay-1">
           Predict Student <span className="gradient-text"> Performance</span>
