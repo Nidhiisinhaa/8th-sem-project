@@ -1,20 +1,34 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BookOpen, Mail, Lock, ArrowRight, Eye, EyeOff, GraduationCap, UserCheck } from 'lucide-react';
 import { useState } from 'react';
 import './Login.css';
 
-export default function Login() {
-  const [isSignUp, setIsSignUp] = useState(false);
+export default function Login({ onLogin }) {
+  const [isSignUp, setIsSignUp] = useState(true);
+  const [name, setName] = useState(''); // User ka naam store karne ke liye
   const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState('student');
 
+  const navigate = useNavigate(); // Initialize navigate
+
   const handleSubmit = (e) => {
-    e.preventDefault();
-    // Navigate to appropriate dashboard based on role
-    window.location.href = role === 'teacher'
-      ? '/dashboard/teacher'
-      : '/dashboard/student';
+  e.preventDefault();
+
+  // 1. Ek object banao jisme name aur role dono honi chahiye
+  const userData = {
+    name: name || "User", // Agar name khali hai toh "User" dikhayega
+    role: role
   };
+
+  // 2. Memory mein save karo (Refresh ke liye)
+  localStorage.setItem('userData', JSON.stringify(userData));
+
+  // 3. App.jsx ki state update karo (onLogin wahi setUser hai jo humne pass kiya tha)
+  onLogin(userData);
+
+  // 4. Sahi dashboard par bhejo
+  navigate(role === 'teacher' ? '/dashboard/teacher' : '/dashboard/student');
+};
 
   return (
     <div className="login-page">
@@ -62,7 +76,7 @@ export default function Login() {
                   <label>Full Name</label>
                   <div className="input-wrapper">
                     <Mail size={18} />
-                    <input type="text" placeholder="Enter your full name" />
+                    <input type="text" placeholder="Enter your full name" value={name}  onChange={(e) => setName(e.target.value)} />
                   </div>
                 </div>
               )}

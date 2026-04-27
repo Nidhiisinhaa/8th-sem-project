@@ -1,10 +1,10 @@
-import { 
-  TrendingUp, TrendingDown, AlertTriangle, Award, 
-  BookOpen, Clock, Target, Lightbulb, ChevronUp, ChevronDown
+import {
+  TrendingUp, TrendingDown, AlertTriangle, Award,
+  BookOpen, Clock, Target, Lightbulb, ChevronUp, ChevronDown, Hand
 } from 'lucide-react';
-import { 
-  AreaChart, Area, BarChart, Bar, RadarChart, Radar, PolarGrid, 
-  PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, 
+import {
+  AreaChart, Area, BarChart, Bar, RadarChart, Radar, PolarGrid,
+  PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer,
   XAxis, YAxis, Tooltip, CartesianGrid
 } from 'recharts';
 import './StudentDashboard.css';
@@ -68,7 +68,7 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null;
 };
 
-export default function StudentDashboard() {
+export default function StudentDashboard({user}) {
   const riskColor = studentData.riskScore <= 30 ? 'green' : studentData.riskScore <= 60 ? 'amber' : 'red';
 
   return (
@@ -77,7 +77,10 @@ export default function StudentDashboard() {
       <div className="page-header">
         <div>
           <h1>Student Dashboard</h1>
-          <p className="page-subtitle">Welcome back, {studentData.name} 👋</p>
+          <p className="page-subtitle">Welcome back, {user?.name || 'Student'} <span className="waving-hand">
+            <Hand size={20} />
+            </span>
+          </p>
         </div>
         <div className="header-meta">
           <span className="meta-badge">{studentData.rollNo}</span>

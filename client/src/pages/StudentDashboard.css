@@ -16,9 +16,31 @@
 }
 
 .page-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  font-size: 1.0rem;
   margin-top: 4px;
+}
+
+.waving-hand {
+  display: inline-block;
+  color: #e3ce99; /* Emoji jaisa yellow color */
+  animation: wave-animation 2.5s infinite; /* Animation loop mein chalega */
+  transform-origin: 70% 70%; /* Wave niche se ho, isliye origin set kiya */
+}
+
+/* Waving Logic */
+@keyframes wave-animation {
+    0% { transform: rotate( 0.0deg) }
+   10% { transform: rotate(14.0deg) }  /* Thoda jhuka */
+   20% { transform: rotate(-8.0deg) }  /* Dusri taraf jhuka */
+   30% { transform: rotate(14.0deg) }
+   40% { transform: rotate(-4.0deg) }
+   50% { transform: rotate(10.0deg) }
+   60% { transform: rotate( 0.0deg) }  /* Wapas normal */
+  100% { transform: rotate( 0.0deg) }
 }
 
 .header-meta {

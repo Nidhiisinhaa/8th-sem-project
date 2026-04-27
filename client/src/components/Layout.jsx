@@ -1,4 +1,4 @@
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link, useLocation, Navigate } from 'react-router-dom';
 import {
   LayoutDashboard, Users, Upload, BarChart3,
   GraduationCap, LogOut, Menu, X, Bell, Search,
@@ -8,15 +8,26 @@ import { useState } from 'react';
 import './Layout.css';
 
 const sidebarLinks = [
-  { path: '/dashboard/student', label: 'Student Dashboard', icon: GraduationCap },
-  { path: '/dashboard/teacher', label: 'Teacher Dashboard', icon: Users },
-  { path: '/dashboard/upload', label: 'Upload Data', icon: Upload },
-  { path: '/dashboard/analytics', label: 'Analytics', icon: BarChart3 },
+  { path: '/dashboard/student', label: 'Student Dashboard', icon: GraduationCap, roles: ['student'] },
+  { path: '/dashboard/teacher', label: 'Teacher Dashboard', icon: Users, roles: ['teacher'] },
+  { path: '/dashboard/upload', label: 'Upload Data', icon: Upload, roles: ['student'] }, // Teacher only fix
+  { path: '/dashboard/analytics', label: 'Analytics', icon: BarChart3, roles: ['student', 'teacher'] },
 ];
 
-export default function Layout() {
+export default function Layout({ user }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
+
+  // Role ko user object se nikal rahe hain
+  const role = user?.role;
+
+  // 3. Logic: Agar user login nahi hai, toh bhej do login page par
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // 4. Logic: Links filter karo current role ke hisaab se
+  const filteredLinks = sidebarLinks.filter(link => link.roles.includes(role));
 
   return (
     <div className="layout">
@@ -33,7 +44,8 @@ export default function Layout() {
 
         <nav className="sidebar-nav">
           <div className="nav-label">{sidebarOpen && 'MAIN MENU'}</div>
-          {sidebarLinks.map((link) => {
+
+          {filteredLinks.map((link) => {
             const Icon = link.icon;
             const isActive = location.pathname === link.path;
             return (
@@ -51,7 +63,12 @@ export default function Layout() {
         </nav>
 
         <div className="sidebar-footer">
-          <Link to="/login" className="nav-item logout-btn">
+          {/* Logout: userData clear karega */}
+          <Link
+            to="/login"
+            className="nav-item logout-btn"
+            onClick={() => localStorage.removeItem('userData')}
+          >
             <LogOut size={20} />
             {sidebarOpen && <span>Logout</span>}
           </Link>
@@ -60,7 +77,6 @@ export default function Layout() {
 
       {/* Main Content Area */}
       <div className={`main-area ${sidebarOpen ? '' : 'expanded'}`}>
-        {/* Top Navbar */}
         <header className="topbar">
           <div className="topbar-left">
             <button className="menu-toggle" onClick={() => setSidebarOpen(!sidebarOpen)}>
@@ -77,13 +93,16 @@ export default function Layout() {
               <span className="notif-dot"></span>
             </button>
             <div className="user-avatar">
-              <div className="avatar-circle">S</div>
-              {sidebarOpen && <span className="user-name">Shweta</span>}
+              <div className="avatar-circle">
+                {/* Naam ka pehla letter dynamic */}
+                {user?.name?.charAt(0).toUpperCase() || 'U'}
+              </div>
+              {/* Yahan "Shweta" ki jagah dynamic name aayega */}
+              {sidebarOpen && <span className="user-name">{user?.name || 'User'}</span>}
             </div>
           </div>
         </header>
 
-        {/* Page Content */}
         <main className="page-content">
           <Outlet />
         </main>
