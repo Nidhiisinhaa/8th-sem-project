@@ -274,6 +274,74 @@
   color: var(--text-primary);
 }
 
+/* Tooltip Parent Container */
+.tooltip-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-right: 12px; /* Avatar se thoda space */
+}
+
+/* Red Power Button Style */
+.red-power-btn {
+  background: rgba(239, 68, 68, 0.08); /* Light Red background */
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #ef4444; /* Bright Red color */
+  padding: 10px;
+  border-radius: 50%; /* Gol button */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+/* Hover Effect for Button */
+.red-power-btn:hover {
+  background: #ef4444; /* Dark Red background */
+  color: white; /* White icon */
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.3); /* Red glow */
+}
+
+/* Tooltip Text Style (Initial state: Hidden) */
+.tooltip-text {
+  visibility: hidden;
+  position: absolute;
+  bottom: -35px; /* Button ke neeche dikhane ke liye */
+  left: 50%;
+  transform: translateX(-50%); /* Center mein align */
+  background-color: #1e293b; /* Dark Slate background */
+  color: #fff;
+  text-align: center;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap; /* Text break na ho */
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 1000; /* Sabse upar dikhe */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Tooltip Arrow (Chota trikona) */
+.tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: -5px; /* Tooltip box ke upar */
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #1e293b transparent; /* Arrow downward */
+}
+
+/* Hover logic for showing tooltip */
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+
 /* ==================== PAGE CONTENT ==================== */
 .page-content {
   padding: 28px;

@@ -2,7 +2,7 @@ import { Outlet, Link, useLocation, Navigate } from 'react-router-dom';
 import {
   LayoutDashboard, Users, Upload, BarChart3,
   GraduationCap, LogOut, Menu, X, Bell, Search,
-  ChevronRight, BookOpen
+  ChevronRight, BookOpen, Power
 } from 'lucide-react';
 import { useState } from 'react';
 import './Layout.css';
@@ -20,11 +20,6 @@ export default function Layout({ user }) {
 
   // Role ko user object se nikal rahe hain
   const role = user?.role;
-
-  // 3. Logic: Agar user login nahi hai, toh bhej do login page par
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
 
   // 4. Logic: Links filter karo current role ke hisaab se
   const filteredLinks = sidebarLinks.filter(link => link.roles.includes(role));
@@ -99,6 +94,21 @@ export default function Layout({ user }) {
               </div>
               {/* Yahan "Shweta" ki jagah dynamic name aayega */}
               {sidebarOpen && <span className="user-name">{user?.name || 'User'}</span>}
+            </div>
+            {/* NAYA LOGOUT BUTTON */}
+            <div className="tooltip-container">
+              <button
+                className="red-power-btn"
+                onClick={() => {
+                  localStorage.removeItem('userData'); // Memory clear karo
+                  window.location.href = '/login';    // Forcefully login par bhejo
+                }}
+              >
+                <Power size={18} strokeWidth={2.5} /> {/* Power Icon */}
+              </button>
+
+              {/* Hover par ye message dikhega */}
+              <span className="tooltip-text">Log Out</span>
             </div>
           </div>
         </header>

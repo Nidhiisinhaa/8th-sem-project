@@ -1,7 +1,9 @@
+import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BookOpen, Mail, Lock, ArrowRight, Eye, EyeOff, GraduationCap, UserCheck } from 'lucide-react';
-import { useState } from 'react';
 import './Login.css';
+import StudentContext from '../contexts/student/StudentContext';
+import TeacherContext from '../contexts/teacher/TeacherContext';
 
 export default function Login({ onLogin }) {
   const [isSignUp, setIsSignUp] = useState(true);
@@ -11,22 +13,35 @@ export default function Login({ onLogin }) {
 
   const navigate = useNavigate(); // Initialize navigate
 
+  const { setStudentData } = useContext(StudentContext);
+  const { setTeacherData } = useContext(TeacherContext);
+
   const handleSubmit = (e) => {
   e.preventDefault();
 
-  // 1. Ek object banao jisme name aur role dono honi chahiye
+  // 1. Mandatory Name Check Logic
+  if (isSignUp && (!name || name.trim() === "")) {
+    alert("Please enter your Full Name to continue!");
+    return;
+  }
+
   const userData = {
-    name: name || "User", // Agar name khali hai toh "User" dikhayega
+    name: name.trim(),
     role: role
   };
 
-  // 2. Memory mein save karo (Refresh ke liye)
   localStorage.setItem('userData', JSON.stringify(userData));
 
-  // 3. App.jsx ki state update karo (onLogin wahi setUser hai jo humne pass kiya tha)
+  // 4. ROLE-BASED CONTEXT UPDATE (Yahi backend integration mein kaam aayega)
+    if (role === 'student') {
+      // Jab backend aayega, yahan backend se aaya poora object jayega
+      setStudentData({ name: userData.name, rollNo: 'Pending...', gpa: 0 });
+    } else {
+      setTeacherData({ name: userData.name, department: 'Pending...' });
+    }
+
   onLogin(userData);
 
-  // 4. Sahi dashboard par bhejo
   navigate(role === 'teacher' ? '/dashboard/teacher' : '/dashboard/student');
 };
 
@@ -76,7 +91,7 @@ export default function Login({ onLogin }) {
                   <label>Full Name</label>
                   <div className="input-wrapper">
                     <Mail size={18} />
-                    <input type="text" placeholder="Enter your full name" value={name}  onChange={(e) => setName(e.target.value)} />
+                    <input type="text" placeholder="Enter your full name" value={name} required onChange={(e) => setName(e.target.value)} />
                   </div>
                 </div>
               )}
