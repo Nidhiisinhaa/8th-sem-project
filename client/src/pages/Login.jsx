@@ -11,38 +11,49 @@ export default function Login({ onLogin }) {
   const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState('student');
 
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   const navigate = useNavigate(); // Initialize navigate
 
-  const { setStudentData } = useContext(StudentContext);
-  const { setTeacherData } = useContext(TeacherContext);
+  const { updateStudentFromStorage } = useContext(StudentContext);
+  const { updateTeacherFromStorage } = useContext(TeacherContext);
 
   const handleSubmit = (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  // 1. Mandatory Name Check Logic
-  if (isSignUp && (!name || name.trim() === "")) {
-    alert("Please enter your Full Name to continue!");
-    return;
-  }
-
-  const userData = {
-    name: name.trim(),
-    role: role
-  };
-
-  localStorage.setItem('userData', JSON.stringify(userData));
-
-  // 4. ROLE-BASED CONTEXT UPDATE (Yahi backend integration mein kaam aayega)
-    if (role === 'student') {
-      // Jab backend aayega, yahan backend se aaya poora object jayega
-      setStudentData({ name: userData.name, rollNo: 'Pending...', gpa: 0 });
-    } else {
-      setTeacherData({ name: userData.name, department: 'Pending...' });
+    // Name check (only for signup)
+    if (isSignUp && (!name || name.trim() === "")) {
+        alert("Please enter your Full Name!");
+        return;
     }
 
-  onLogin(userData);
+    // Email check
+    if (!email || email.trim() === "") {
+        alert("Please enter your Email!");
+        return;
+    }
 
-  navigate(role === 'teacher' ? '/dashboard/teacher' : '/dashboard/student');
+    // Password check
+    if (!password || password.trim() === "") {
+        alert("Please enter your Password!");
+        return;
+    }
+
+    // Password length check
+    if (password.length < 6) {
+        alert("Password must be at least 6 characters!");
+        return;
+    }
+
+    const userData = {
+        name: isSignUp ? name.trim() : email.split('@')[0], // agar signin hai toh email se naam nikalo
+        role: role
+    };
+
+    localStorage.setItem('userData', JSON.stringify(userData));
+    onLogin(userData);
+    navigate(role === 'teacher' ? '/dashboard/teacher' : '/dashboard/student');
 };
 
   return (
@@ -100,7 +111,7 @@ export default function Login({ onLogin }) {
                 <label>Email Address</label>
                 <div className="input-wrapper">
                   <Mail size={18} />
-                  <input type="email" placeholder="you@example.com" />
+                  <input type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
                 </div>
               </div>
 
@@ -108,10 +119,7 @@ export default function Login({ onLogin }) {
                 <label>Password</label>
                 <div className="input-wrapper">
                   <Lock size={18} />
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder="Enter your password"
-                  />
+                  <input type={showPassword ? 'text' : 'password'} placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)} />
                   <button
                     type="button"
                     className="eye-btn"

@@ -1,17 +1,209 @@
 import {
-  TrendingUp, TrendingDown, AlertTriangle, Award,
-  BookOpen, Clock, Target, Lightbulb, ChevronUp, ChevronDown, Hand
+    TrendingUp, AlertTriangle, Award,
+    BookOpen, Clock, Target, Lightbulb, ChevronUp, ChevronDown, Hand
 } from 'lucide-react';
 import {
-  AreaChart, Area, BarChart, Bar, RadarChart, Radar, PolarGrid,
-  PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer,
-  XAxis, YAxis, Tooltip, CartesianGrid
+    AreaChart, Area, BarChart, Bar, RadarChart, Radar, PolarGrid,
+    PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer,
+    XAxis, YAxis, Tooltip, CartesianGrid
 } from 'recharts';
 import './StudentDashboard.css';
 import React, { useContext, useEffect } from 'react';
-import StudentContext from '../contexts/student/StudentContext'; // Path sahi check kar lena
+import StudentContext from '../contexts/student/StudentContext';
 
-// Mock data for the student
+const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+        return (
+            <div className="custom-tooltip">
+                <p className="tooltip-label">{label}</p>
+                <p className="tooltip-value">{payload[0].value}</p>
+            </div>
+        );
+    }
+    return null;
+};
+
+export default function StudentDashboard({ user }) {
+
+    const { studentData, loading, error, getStudentData } = useContext(StudentContext);
+
+    useEffect(() => {
+        getStudentData();
+    }, []);
+
+    // Loading state
+    if (loading) {
+        return <div className="loading">Loading Dashboard...</div>;
+    }
+
+    // Error state
+    if (error) {
+        return (
+            <div className="error">
+                <p>{error}</p>
+                <button onClick={getStudentData}>Retry</button>
+            </div>
+        );
+    }
+
+    // No data yet
+    if (!studentData) {
+        return <div className="loading">Loading Dashboard Data...</div>;
+    }
+
+    const riskColor = studentData.riskScore <= 30 ? 'green' : studentData.riskScore <= 60 ? 'amber' : 'red';
+
+    return (
+        <div className="student-dashboard">
+            {/* Page Header */}
+            <div className="page-header">
+                <div>
+                    <h1>Student Dashboard</h1>
+                    <p className="page-subtitle">
+                        Welcome back, {user?.name || studentData.name || 'Student'}
+                        <span className="waving-hand"><Hand size={20} /></span>
+                    </p>
+                </div>
+                <div className="header-meta">
+                    <span className="meta-badge">{studentData.rollNo}</span>
+                    <span className="meta-badge">{studentData.semester}</span>
+                </div>
+            </div>
+
+            {/* Stats Cards */}
+            <div className="stats-grid">
+                <div className="stat-card animate-fade-in-up delay-1">
+                    <div className="stat-icon blue"><Target size={22} /></div>
+                    <div className="stat-info">
+                        <span className="stat-label-text">Predicted Grade</span>
+                        <span className="stat-value-text">{studentData.predictedGrade}</span>
+                    </div>
+                    <div className="stat-trend up"><ChevronUp size={16} /> 12%</div>
+                </div>
+
+                <div className="stat-card animate-fade-in-up delay-2">
+                    <div className="stat-icon" style={{ color: riskColor }}><AlertTriangle size={22} /></div>
+                    <div className="stat-info">
+                        <span className="stat-label-text">Risk Score</span>
+                        <span className="stat-value-text">{studentData.riskScore}/100</span>
+                    </div>
+                    <span className={`risk-badge ${riskColor}`}>{studentData.riskLevel}</span>
+                </div>
+
+                <div className="stat-card animate-fade-in-up delay-3">
+                    <div className="stat-icon purple"><Award size={22} /></div>
+                    <div className="stat-info">
+                        <span className="stat-label-text">Current GPA</span>
+                        <span className="stat-value-text">{studentData.gpa}</span>
+                    </div>
+                    <div className="stat-trend up"><ChevronUp size={16} /> 0.2</div>
+                </div>
+
+                <div className="stat-card animate-fade-in-up delay-4">
+                    <div className="stat-icon cyan"><Clock size={22} /></div>
+                    <div className="stat-info">
+                        <span className="stat-label-text">Attendance</span>
+                        <span className="stat-value-text">{studentData.attendance}%</span>
+                    </div>
+                    <div className="stat-trend down"><ChevronDown size={16} /> 3%</div>
+                </div>
+            </div>
+
+            {/* Charts Row */}
+            <div className="charts-row">
+                <div className="chart-card animate-fade-in-up delay-2">
+                    <div className="chart-header">
+                        <h3><TrendingUp size={18} /> GPA Trend</h3>
+                        <span className="chart-badge">All Semesters</span>
+                    </div>
+                    <div className="chart-body">
+                        <ResponsiveContainer width="100%" height={250}>
+                            <AreaChart data={studentData.semesterTrend}>
+                                <defs>
+                                    <linearGradient id="gpaGradient" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stopColor="#4e7cff" stopOpacity={0.3} />
+                                        <stop offset="100%" stopColor="#4e7cff" stopOpacity={0} />
+                                    </linearGradient>
+                                </defs>
+                                <CartesianGrid strokeDasharray="3 3" stroke="#2d3148" />
+                                <XAxis dataKey="sem" tick={{ fill: '#8b8fa3', fontSize: 12 }} axisLine={false} />
+                                <YAxis domain={[6, 10]} tick={{ fill: '#8b8fa3', fontSize: 12 }} axisLine={false} />
+                                <Tooltip content={<CustomTooltip />} />
+                                <Area type="monotone" dataKey="gpa" stroke="#4e7cff" strokeWidth={2} fill="url(#gpaGradient)" dot={{ fill: '#4e7cff', r: 4 }} />
+                            </AreaChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+
+                <div className="chart-card animate-fade-in-up delay-3">
+                    <div className="chart-header">
+                        <h3><BookOpen size={18} /> Subject Scores</h3>
+                        <span className="chart-badge">Current Semester</span>
+                    </div>
+                    <div className="chart-body">
+                        <ResponsiveContainer width="100%" height={250}>
+                            <BarChart data={studentData.subjectScores} barSize={32}>
+                                <CartesianGrid strokeDasharray="3 3" stroke="#2d3148" vertical={false} />
+                                <XAxis dataKey="subject" tick={{ fill: '#8b8fa3', fontSize: 12 }} axisLine={false} />
+                                <YAxis domain={[0, 100]} tick={{ fill: '#8b8fa3', fontSize: 12 }} axisLine={false} />
+                                <Tooltip content={<CustomTooltip />} />
+                                <Bar dataKey="score" radius={[6, 6, 0, 0]} fill="#8b5cf6" />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+            </div>
+
+            {/* Bottom Row */}
+            <div className="bottom-row">
+                <div className="chart-card animate-fade-in-up delay-3">
+                    <div className="chart-header">
+                        <h3><Target size={18} /> Performance Factors</h3>
+                    </div>
+                    <div className="chart-body">
+                        <ResponsiveContainer width="100%" height={280}>
+                            <RadarChart data={studentData.radarData}>
+                                <PolarGrid stroke="#2d3148" />
+                                <PolarAngleAxis dataKey="factor" tick={{ fill: '#8b8fa3', fontSize: 11 }} />
+                                <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
+                                <Radar dataKey="value" stroke="#22c55e" fill="#22c55e" fillOpacity={0.15} strokeWidth={2} dot={{ fill: '#22c55e', r: 3 }} />
+                            </RadarChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+
+                <div className="chart-card recommendations-card animate-fade-in-up delay-4">
+                    <div className="chart-header">
+                        <h3><Lightbulb size={18} /> AI Recommendations</h3>
+                    </div>
+                    <div className="recommendations-list">
+                        {studentData.recommendations.map((rec, i) => (
+                            <div key={i} className={`rec-item ${rec.priority}`}>
+                                <span className="rec-icon">{rec.icon}</span>
+                                <p>{rec.text}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+// import {
+//   TrendingUp, TrendingDown, AlertTriangle, Award,
+//   BookOpen, Clock, Target, Lightbulb, ChevronUp, ChevronDown, Hand
+// } from 'lucide-react';
+// import {
+//   AreaChart, Area, BarChart, Bar, RadarChart, Radar, PolarGrid,
+//   PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer,
+//   XAxis, YAxis, Tooltip, CartesianGrid
+// } from 'recharts';
+// import './StudentDashboard.css';
+// import React, { useContext, useEffect } from 'react';
+// import StudentContext from '../contexts/student/StudentContext'; // Path sahi check kar lena
+
+// // Mock data for the student
 // const studentData = {
 //   name: 'Rahul Sharma',
 //   rollNo: 'CS-2022-042',
@@ -51,233 +243,233 @@ import StudentContext from '../contexts/student/StudentContext'; // Path sahi ch
 //   { factor: 'Projects', value: 95 },
 // ];
 
-const recommendations = [
-  { icon: '📚', text: 'Focus more on DBMS — spend 2 extra hours/week on practice queries', priority: 'high' },
-  { icon: '📝', text: 'Your quiz scores can improve — try solving previous year papers', priority: 'medium' },
-  { icon: '⏰', text: 'Maintain your attendance above 85% to avoid risk escalation', priority: 'low' },
-  { icon: '💡', text: 'Your project scores are excellent — consider contributing to open source', priority: 'info' },
-];
+// const recommendations = [
+//   { icon: '📚', text: 'Focus more on DBMS — spend 2 extra hours/week on practice queries', priority: 'high' },
+//   { icon: '📝', text: 'Your quiz scores can improve — try solving previous year papers', priority: 'medium' },
+//   { icon: '⏰', text: 'Maintain your attendance above 85% to avoid risk escalation', priority: 'low' },
+//   { icon: '💡', text: 'Your project scores are excellent — consider contributing to open source', priority: 'info' },
+// ];
 
-const CustomTooltip = ({ active, payload, label }) => {
-  if (active && payload && payload.length) {
-    return (
-      <div className="custom-tooltip">
-        <p className="tooltip-label">{label}</p>
-        <p className="tooltip-value">{payload[0].value}</p>
-      </div>
-    );
-  }
-  return null;
-};
+// const CustomTooltip = ({ active, payload, label }) => {
+//   if (active && payload && payload.length) {
+//     return (
+//       <div className="custom-tooltip">
+//         <p className="tooltip-label">{label}</p>
+//         <p className="tooltip-value">{payload[0].value}</p>
+//       </div>
+//     );
+//   }
+//   return null;
+// };
 
-export default function StudentDashboard({user}) {
+// export default function StudentDashboard({user}) {
 
-  const { studentData, getStudentData } = useContext(StudentContext);
-  // 2. Jaise hi dashboard load ho, Backend call (getStudentData) trigger karo
-  useEffect(() => {
-    getStudentData();
-  }, []);
-  // Jab tak data load na ho jaye, chota sa loading dikha sakte ho (Optional)
-  if (!studentData) {
-    return <div className="loading">Loading Dashboard Data...</div>;
-  }
+//   const { studentData, getStudentData } = useContext(StudentContext);
+//   // 2. Jaise hi dashboard load ho, Backend call (getStudentData) trigger karo
+//   useEffect(() => {
+//     getStudentData();
+//   }, []);
+//   // Jab tak data load na ho jaye, chota sa loading dikha sakte ho (Optional)
+//   if (!studentData) {
+//     return <div className="loading">Loading Dashboard Data...</div>;
+//   }
 
-  const riskColor = studentData.riskScore <= 30 ? 'green' : studentData.riskScore <= 60 ? 'amber' : 'red';
+//   const riskColor = studentData.riskScore <= 30 ? 'green' : studentData.riskScore <= 60 ? 'amber' : 'red';
 
-  return (
-    <div className="student-dashboard">
-      {/* Page Header */}
-      <div className="page-header">
-        <div>
-          <h1>Student Dashboard</h1>
-          <p className="page-subtitle">
-            Welcome back, {user?.name || 'Student'}
-            <span className="waving-hand"><Hand size={20} /></span>
-          </p>
-        </div>
-        <div className="header-meta">
-          <span className="meta-badge">{studentData.rollNo}</span>
-          <span className="meta-badge">{studentData.semester}</span>
-        </div>
-      </div>
+//   return (
+//     <div className="student-dashboard">
+//       {/* Page Header */}
+//       <div className="page-header">
+//         <div>
+//           <h1>Student Dashboard</h1>
+//           <p className="page-subtitle">
+//             Welcome back, {user?.name || 'Student'}
+//             <span className="waving-hand"><Hand size={20} /></span>
+//           </p>
+//         </div>
+//         <div className="header-meta">
+//           <span className="meta-badge">{studentData.rollNo}</span>
+//           <span className="meta-badge">{studentData.semester}</span>
+//         </div>
+//       </div>
 
-      {/* Stats Cards Row */}
-      <div className="stats-grid">
-        {/* Card 1: Predicted Grade */}
-        <div className="stat-card animate-fade-in-up delay-1">
-          <div className="stat-icon blue"><Target size={22} /></div>
-          <div className="stat-info">
-            <span className="stat-label-text">Predicted Grade</span>
-            <span className="stat-value-text">{studentData.predictedGrade}</span>
-          </div>
-          <div className="stat-trend up"><ChevronUp size={16} /> 12%</div>
-        </div>
+//       {/* Stats Cards Row */}
+//       <div className="stats-grid">
+//         {/* Card 1: Predicted Grade */}
+//         <div className="stat-card animate-fade-in-up delay-1">
+//           <div className="stat-icon blue"><Target size={22} /></div>
+//           <div className="stat-info">
+//             <span className="stat-label-text">Predicted Grade</span>
+//             <span className="stat-value-text">{studentData.predictedGrade}</span>
+//           </div>
+//           <div className="stat-trend up"><ChevronUp size={16} /> 12%</div>
+//         </div>
 
-      {/* Stats Cards Row
-      <div className="stats-grid">
-        <div className="stat-card animate-fade-in-up delay-1">
-          <div className="stat-icon blue"><Target size={22} /></div>
-          <div className="stat-info">
-            <span className="stat-label-text">Predicted Grade</span>
-            <span className="stat-value-text">{studentData.predictedGrade}</span>
-          </div>
-          <div className="stat-trend up"><ChevronUp size={16} /> 12%</div>
-        </div> */}
+//       {/* Stats Cards Row
+//       <div className="stats-grid">
+//         <div className="stat-card animate-fade-in-up delay-1">
+//           <div className="stat-icon blue"><Target size={22} /></div>
+//           <div className="stat-info">
+//             <span className="stat-label-text">Predicted Grade</span>
+//             <span className="stat-value-text">{studentData.predictedGrade}</span>
+//           </div>
+//           <div className="stat-trend up"><ChevronUp size={16} /> 12%</div>
+//         </div> */}
 
 
-        {/* <div className="stat-card animate-fade-in-up delay-2">
-          <div className={`stat-icon ${riskColor}`}><AlertTriangle size={22} /></div>
-          <div className="stat-info">
-            <span className="stat-label-text">Risk Score</span>
-            <span className="stat-value-text">{studentData.riskScore}/100</span>
-          </div>
-          <span className={`risk-badge ${riskColor}`}>{studentData.riskLevel}</span>
-        </div> */}
+//         {/* <div className="stat-card animate-fade-in-up delay-2">
+//           <div className={`stat-icon ${riskColor}`}><AlertTriangle size={22} /></div>
+//           <div className="stat-info">
+//             <span className="stat-label-text">Risk Score</span>
+//             <span className="stat-value-text">{studentData.riskScore}/100</span>
+//           </div>
+//           <span className={`risk-badge ${riskColor}`}>{studentData.riskLevel}</span>
+//         </div> */}
 
-        {/* Card 2: Risk Score */}
-        <div className="stat-card animate-fade-in-up delay-2">
-          <div className="stat-icon" style={{color: riskColor}}><AlertTriangle size={22} /></div>
-          <div className="stat-info">
-            <span className="stat-label-text">Risk Score</span>
-            <span className="stat-value-text">{studentData.riskScore}/100</span>
-          </div>
-          <span className={`risk-badge ${riskColor}`}>{studentData.riskLevel}</span>
-        </div>
+//         {/* Card 2: Risk Score */}
+//         <div className="stat-card animate-fade-in-up delay-2">
+//           <div className="stat-icon" style={{color: riskColor}}><AlertTriangle size={22} /></div>
+//           <div className="stat-info">
+//             <span className="stat-label-text">Risk Score</span>
+//             <span className="stat-value-text">{studentData.riskScore}/100</span>
+//           </div>
+//           <span className={`risk-badge ${riskColor}`}>{studentData.riskLevel}</span>
+//         </div>
 
-        {/* <div className="stat-card animate-fade-in-up delay-3">
-          <div className="stat-icon purple"><Award size={22} /></div>
-          <div className="stat-info">
-            <span className="stat-label-text">Current GPA</span>
-            <span className="stat-value-text">{studentData.gpa}</span>
-          </div>
-          <div className="stat-trend up"><ChevronUp size={16} /> 0.2</div>
-        </div> */}
+//         {/* <div className="stat-card animate-fade-in-up delay-3">
+//           <div className="stat-icon purple"><Award size={22} /></div>
+//           <div className="stat-info">
+//             <span className="stat-label-text">Current GPA</span>
+//             <span className="stat-value-text">{studentData.gpa}</span>
+//           </div>
+//           <div className="stat-trend up"><ChevronUp size={16} /> 0.2</div>
+//         </div> */}
 
-        {/* Card 3: GPA */}
-        <div className="stat-card animate-fade-in-up delay-3">
-          <div className="stat-icon purple"><Award size={22} /></div>
-          <div className="stat-info">
-            <span className="stat-label-text">Current GPA</span>
-            <span className="stat-value-text">{studentData.gpa}</span>
-          </div>
-          <div className="stat-trend up"><ChevronUp size={16} /> 0.2</div>
-        </div>
+//         {/* Card 3: GPA */}
+//         <div className="stat-card animate-fade-in-up delay-3">
+//           <div className="stat-icon purple"><Award size={22} /></div>
+//           <div className="stat-info">
+//             <span className="stat-label-text">Current GPA</span>
+//             <span className="stat-value-text">{studentData.gpa}</span>
+//           </div>
+//           <div className="stat-trend up"><ChevronUp size={16} /> 0.2</div>
+//         </div>
 
-        {/* Card 4: Attendance */}
-        <div className="stat-card animate-fade-in-up delay-4">
-          <div className="stat-icon cyan"><Clock size={22} /></div>
-          <div className="stat-info">
-            <span className="stat-label-text">Attendance</span>
-            <span className="stat-value-text">{studentData.attendance}%</span>
-          </div>
-          <div className="stat-trend down"><ChevronDown size={16} /> 3%</div>
-        </div>
-      </div>
+//         {/* Card 4: Attendance */}
+//         <div className="stat-card animate-fade-in-up delay-4">
+//           <div className="stat-icon cyan"><Clock size={22} /></div>
+//           <div className="stat-info">
+//             <span className="stat-label-text">Attendance</span>
+//             <span className="stat-value-text">{studentData.attendance}%</span>
+//           </div>
+//           <div className="stat-trend down"><ChevronDown size={16} /> 3%</div>
+//         </div>
+//       </div>
 
-        {/* <div className="stat-card animate-fade-in-up delay-4">
-          <div className="stat-icon cyan"><Clock size={22} /></div>
-          <div className="stat-info">
-            <span className="stat-label-text">Attendance</span>
-            <span className="stat-value-text">{studentData.attendance}%</span>
-          </div>
-          <div className="stat-trend down"><ChevronDown size={16} /> 3%</div>
-        </div>
-      </div> */}
+//         {/* <div className="stat-card animate-fade-in-up delay-4">
+//           <div className="stat-icon cyan"><Clock size={22} /></div>
+//           <div className="stat-info">
+//             <span className="stat-label-text">Attendance</span>
+//             <span className="stat-value-text">{studentData.attendance}%</span>
+//           </div>
+//           <div className="stat-trend down"><ChevronDown size={16} /> 3%</div>
+//         </div>
+//       </div> */}
 
-      {/* Charts Row */}
-      <div className="charts-row">
-        {/* GPA Trend */}
-        <div className="chart-card animate-fade-in-up delay-2">
-          <div className="chart-header">
-            <h3><TrendingUp size={18} /> GPA Trend</h3>
-            <span className="chart-badge">All Semesters</span>
-          </div>
-          <div className="chart-body">
-            <ResponsiveContainer width="100%" height={250}>
-              <AreaChart data={semesterTrend}>
-                <defs>
-                  <linearGradient id="gpaGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#4e7cff" stopOpacity={0.3}/>
-                    <stop offset="100%" stopColor="#4e7cff" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#2d3148" />
-                <XAxis dataKey="sem" tick={{ fill: '#8b8fa3', fontSize: 12 }} axisLine={false} />
-                <YAxis domain={[6, 10]} tick={{ fill: '#8b8fa3', fontSize: 12 }} axisLine={false} />
-                <Tooltip content={<CustomTooltip />} />
-                <Area type="monotone" dataKey="gpa" stroke="#4e7cff" strokeWidth={2} fill="url(#gpaGradient)" dot={{ fill: '#4e7cff', r: 4 }} />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
+//       {/* Charts Row */}
+//       <div className="charts-row">
+//         {/* GPA Trend */}
+//         <div className="chart-card animate-fade-in-up delay-2">
+//           <div className="chart-header">
+//             <h3><TrendingUp size={18} /> GPA Trend</h3>
+//             <span className="chart-badge">All Semesters</span>
+//           </div>
+//           <div className="chart-body">
+//             <ResponsiveContainer width="100%" height={250}>
+//               <AreaChart data={semesterTrend}>
+//                 <defs>
+//                   <linearGradient id="gpaGradient" x1="0" y1="0" x2="0" y2="1">
+//                     <stop offset="0%" stopColor="#4e7cff" stopOpacity={0.3}/>
+//                     <stop offset="100%" stopColor="#4e7cff" stopOpacity={0}/>
+//                   </linearGradient>
+//                 </defs>
+//                 <CartesianGrid strokeDasharray="3 3" stroke="#2d3148" />
+//                 <XAxis dataKey="sem" tick={{ fill: '#8b8fa3', fontSize: 12 }} axisLine={false} />
+//                 <YAxis domain={[6, 10]} tick={{ fill: '#8b8fa3', fontSize: 12 }} axisLine={false} />
+//                 <Tooltip content={<CustomTooltip />} />
+//                 <Area type="monotone" dataKey="gpa" stroke="#4e7cff" strokeWidth={2} fill="url(#gpaGradient)" dot={{ fill: '#4e7cff', r: 4 }} />
+//               </AreaChart>
+//             </ResponsiveContainer>
+//           </div>
+//         </div>
 
-        {/* Subject Scores */}
-        <div className="chart-card animate-fade-in-up delay-3">
-          <div className="chart-header">
-            <h3><BookOpen size={18} /> Subject Scores</h3>
-            <span className="chart-badge">Current Semester</span>
-          </div>
-          <div className="chart-body">
-            <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={subjectScores} barSize={32}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#2d3148" vertical={false} />
-                <XAxis dataKey="subject" tick={{ fill: '#8b8fa3', fontSize: 12 }} axisLine={false} />
-                <YAxis domain={[0, 100]} tick={{ fill: '#8b8fa3', fontSize: 12 }} axisLine={false} />
-                <Tooltip content={<CustomTooltip />} />
-                <Bar dataKey="score" radius={[6, 6, 0, 0]} fill="#8b5cf6" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </div>
+//         {/* Subject Scores */}
+//         <div className="chart-card animate-fade-in-up delay-3">
+//           <div className="chart-header">
+//             <h3><BookOpen size={18} /> Subject Scores</h3>
+//             <span className="chart-badge">Current Semester</span>
+//           </div>
+//           <div className="chart-body">
+//             <ResponsiveContainer width="100%" height={250}>
+//               <BarChart data={subjectScores} barSize={32}>
+//                 <CartesianGrid strokeDasharray="3 3" stroke="#2d3148" vertical={false} />
+//                 <XAxis dataKey="subject" tick={{ fill: '#8b8fa3', fontSize: 12 }} axisLine={false} />
+//                 <YAxis domain={[0, 100]} tick={{ fill: '#8b8fa3', fontSize: 12 }} axisLine={false} />
+//                 <Tooltip content={<CustomTooltip />} />
+//                 <Bar dataKey="score" radius={[6, 6, 0, 0]} fill="#8b5cf6" />
+//               </BarChart>
+//             </ResponsiveContainer>
+//           </div>
+//         </div>
+//       </div>
 
-      {/* Bottom Row */}
-      <div className="bottom-row">
-        {/* Radar Chart */}
-        <div className="chart-card animate-fade-in-up delay-3">
-          <div className="chart-header">
-            <h3><Target size={18} /> Performance Factors</h3>
-          </div>
-          <div className="chart-body">
-            <ResponsiveContainer width="100%" height={280}>
-              <RadarChart data={radarData}>
-                <PolarGrid stroke="#2d3148" />
-                <PolarAngleAxis dataKey="factor" tick={{ fill: '#8b8fa3', fontSize: 11 }} />
-                <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
-                <Radar dataKey="value" stroke="#22c55e" fill="#22c55e" fillOpacity={0.15} strokeWidth={2} dot={{ fill: '#22c55e', r: 3 }} />
-              </RadarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
+//       {/* Bottom Row */}
+//       <div className="bottom-row">
+//         {/* Radar Chart */}
+//         <div className="chart-card animate-fade-in-up delay-3">
+//           <div className="chart-header">
+//             <h3><Target size={18} /> Performance Factors</h3>
+//           </div>
+//           <div className="chart-body">
+//             <ResponsiveContainer width="100%" height={280}>
+//               <RadarChart data={radarData}>
+//                 <PolarGrid stroke="#2d3148" />
+//                 <PolarAngleAxis dataKey="factor" tick={{ fill: '#8b8fa3', fontSize: 11 }} />
+//                 <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
+//                 <Radar dataKey="value" stroke="#22c55e" fill="#22c55e" fillOpacity={0.15} strokeWidth={2} dot={{ fill: '#22c55e', r: 3 }} />
+//               </RadarChart>
+//             </ResponsiveContainer>
+//           </div>
+//         </div>
 
-        {/* Recommendations */}
-        {/* <div className="chart-card recommendations-card animate-fade-in-up delay-4">
-          <div className="chart-header">
-            <h3><Lightbulb size={18} /> AI Recommendations</h3>
-          </div>
-          <div className="recommendations-list">
-            {recommendations.map((rec, i) => (
-              <div key={i} className={`rec-item ${rec.priority}`}>
-                <span className="rec-icon">{rec.icon}</span>
-                <p>{rec.text}</p>
-              </div>
-            ))}
-          </div>
-        </div> */}
-        <div className="chart-card recommendations-card animate-fade-in-up delay-4">
-          <div className="chart-header">
-              <h3><Lightbulb size={18} /> AI Recommendations</h3>
-          </div>
-          <div className="recommendations-list">
-              {recommendations.map((rec, i) => (
-                  <div key={i} className={`rec-item ${rec.priority}`}>
-                      <span className="rec-icon">{rec.icon}</span>
-                      <p>{rec.text}</p>
-                  </div>
-              ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+//         {/* Recommendations */}
+//         {/* <div className="chart-card recommendations-card animate-fade-in-up delay-4">
+//           <div className="chart-header">
+//             <h3><Lightbulb size={18} /> AI Recommendations</h3>
+//           </div>
+//           <div className="recommendations-list">
+//             {recommendations.map((rec, i) => (
+//               <div key={i} className={`rec-item ${rec.priority}`}>
+//                 <span className="rec-icon">{rec.icon}</span>
+//                 <p>{rec.text}</p>
+//               </div>
+//             ))}
+//           </div>
+//         </div> */}
+//         <div className="chart-card recommendations-card animate-fade-in-up delay-4">
+//           <div className="chart-header">
+//               <h3><Lightbulb size={18} /> AI Recommendations</h3>
+//           </div>
+//           <div className="recommendations-list">
+//               {recommendations.map((rec, i) => (
+//                   <div key={i} className={`rec-item ${rec.priority}`}>
+//                       <span className="rec-icon">{rec.icon}</span>
+//                       <p>{rec.text}</p>
+//                   </div>
+//               ))}
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
