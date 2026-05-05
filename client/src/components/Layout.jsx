@@ -90,20 +90,15 @@ export default function Layout({ user }) {
                 className="red-power-btn"
                 onClick={async () => {
                   try {
-                    // ---- BACKEND READY: uncomment when backend is running ----
-                    // const role = user?.role;
-                    // const url = role === 'teacher'
-                    //   ? "https://student-performance-analysis-backend-engk.onrender.com/api/teacher/logout"
-                    //   : "https://student-performance-analysis-backend-engk.onrender.com/api/student/logout";
-                    // await fetch(url, {
-                    //   method: "get",
-                    //   credentials: "include"
-                    // });
-                    // ---- END BACKEND BLOCK ----
+                    const role = user?.role;
+                    const url = role === 'teacher'
+                      ? "https://student-performance-analysis-backend-engk.onrender.com/api/teacher/logout"
+                      : "https://student-performance-analysis-backend-engk.onrender.com/api/student/logout";
 
-                    // ---- DUMMY MODE (delete when backend is ready) ----
-                    console.log("Logging out...");
-                    // ---- END DUMMY MODE ----
+                    await fetch(url, {
+                      method: "get",
+                      credentials: "include"
+                    });
 
                   } catch (err) {
                     console.log("Logout error:", err);
@@ -113,7 +108,7 @@ export default function Layout({ user }) {
                   }
                 }}
               >
-                <Power size={18} strokeWidth={2.5} /> {/* Power Icon */}
+                <Power size={18} strokeWidth={2.5} />
               </button>
 
               {/* Hover par ye message dikhega */}
