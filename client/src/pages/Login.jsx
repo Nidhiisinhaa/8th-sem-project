@@ -5,19 +5,25 @@ import {
   Eye, EyeOff, GraduationCap, UserCheck
 } from 'lucide-react';
 import './Login.css';
-import StudentContext from '../contexts/student/StudentContext';
-import TeacherContext from '../contexts/teacher/TeacherContext';
+
+const TEACHER_DEPARTMENTS = [
+  "Electronics",
+  "Computer Science",
+  "Mechanical",
+  "Information Technology",
+  "Civil",
+];
 
 export default function Login({ onLogin }) {
-  // ── default is LOGIN (isSignUp = false), as your friend asked ──
-  const [isSignUp, setIsSignUp]       = useState(false);
-  const [name, setName]               = useState('');
+  const [isSignUp, setIsSignUp]         = useState(false);
+  const [name, setName]                 = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [role, setRole]               = useState('student');
-  const [email, setEmail]             = useState('');
-  const [password, setPassword]       = useState('');
-  const [loading, setLoading]         = useState(false);
-  const [apiError, setApiError]       = useState('');
+  const [role, setRole]                 = useState('student');
+  const [email, setEmail]               = useState('');
+  const [password, setPassword]         = useState('');
+  const [department, setDepartment]     = useState('');  // teacher only
+  const [loading, setLoading]           = useState(false);
+  const [apiError, setApiError]         = useState('');
 
   const navigate = useNavigate();
 
@@ -25,7 +31,7 @@ export default function Login({ onLogin }) {
     e.preventDefault();
     setApiError('');
 
-    // ── Basic frontend validation ──
+    // ── Validation ──
     if (isSignUp && (!name || name.trim() === '')) {
       setApiError('Please enter your Full Name!');
       return;
@@ -42,57 +48,121 @@ export default function Login({ onLogin }) {
       setApiError('Password must be at least 6 characters!');
       return;
     }
+    // Department required only for teacher signup
+    if (role === 'teacher' && isSignUp && !department) {
+      setApiError('Please select a Department!');
+      return;
+    }
 
     setLoading(true);
 
     try {
-      // ── Pick the right endpoint based on role + action ──
-      // Teacher routes are separate (/teachers/...), student routes are (/students/...)
-      // ⚠️ Confirm teacher base route with your friend — using /teachers/ here
-      const base     = role === 'student' ? '/students' : '/teachers';
-      const action   = isSignUp ? '/signup' : '/login';
-      const url      = `http://localhost:5000${base}${action}`;
+      if (role === 'teacher') {
+        // ── TEACHER SIGNUP ──
+        if (isSignUp) {
+          const payload = {
+            name: name.trim(),
+            email: email.trim(),
+            password,
+            department,
+          };
 
-      // ── Build payload ──
-      // Login needs only email + password
-      // Signup for teacher needs name, email, password, department (check with friend)
-      // Signup for student is handled in Upload.jsx separately (not here)
-      const payload = isSignUp
-        ? { name: name.trim(), email: email.trim(), password }
-        : { email: email.trim(), password };
+          // ---- BACKEND READY: uncomment when backend is running ----
+          // const response = await fetch("https://student-performance-analysis-backend-engk.onrender.com/api/teacher/signup", {
+          //   method: "post",
+          //   headers: { "Content-Type": "application/json" },
+          //   body: JSON.stringify(payload),
+          //   credentials: "include",
+          // });
+          // const responseJson = await response.json();
+          // console.log(responseJson);
+          // if (!response.ok) {
+          //   throw new Error(responseJson.message || "Signup failed");
+          // }
+          // const userData = { name: responseJson.teacher?.name || name.trim(), role };
+          // ---- END BACKEND BLOCK ----
 
-      // ---- BACKEND READY: uncomment this block when backend is ready ----
-// const response = await fetch(url, {
-//     method:      'POST',
-//     body:        JSON.stringify(payload),
-//     headers:     { 'content-type': 'application/json' },
-//     credentials: 'include',
-// });
-// const responseJson = await response.json();
-// if (!response.ok) {
-//     throw new Error(responseJson.message || 'Something went wrong');
-// }
-// const userData = {
-//     name: responseJson.student?.name || responseJson.teacher?.name || email.split('@')[0],
-//     role,
-// };
-// ---- END BACKEND BLOCK ----
+          // ---- DUMMY MODE (delete when backend is ready) ----
+          console.log("Teacher signup payload:", payload);
+          const userData = { name: name.trim(), role };
+          // ---- END DUMMY MODE ----
 
-// ---- DUMMY LOGIN (delete this when backend is ready) ----
-const userData = {
-    name: isSignUp ? name.trim() : email.split('@')[0],
-    role,
-};
-// ---- END DUMMY LOGIN ----
+          localStorage.setItem('userData', JSON.stringify(userData));
+          onLogin(userData);
+          navigate('/dashboard/teacher');
 
-      localStorage.setItem('userData', JSON.stringify(userData));
+        } else {
+          // ── TEACHER LOGIN ──
+          const payload = {
+            email: email.trim(),
+            password,
+          };
 
-      onLogin(userData);
-      navigate(role === 'teacher' ? '/dashboard/teacher' : '/dashboard/student');
+          // ---- BACKEND READY: uncomment when backend is running ----
+          // const response = await fetch("https://student-performance-analysis-backend-engk.onrender.com/api/teacher/login", {
+          //   method: "post",
+          //   headers: { "Content-Type": "application/json" },
+          //   body: JSON.stringify(payload),
+          //   credentials: "include",
+          // });
+          // const responseJson = await response.json();
+          // console.log(responseJson);
+          // if (!response.ok) {
+          //   throw new Error(responseJson.message || "Login failed");
+          // }
+          // const userData = { name: responseJson.teacher?.name || email.split('@')[0], role };
+          // ---- END BACKEND BLOCK ----
+
+          // ---- DUMMY MODE (delete when backend is ready) ----
+          console.log("Teacher login payload:", payload);
+          const userData = { name: email.split('@')[0], role };
+          // ---- END DUMMY MODE ----
+
+          localStorage.setItem('userData', JSON.stringify(userData));
+          onLogin(userData);
+          navigate('/dashboard/teacher');
+        }
+
+      } else {
+        // ── STUDENT LOGIN/SIGNUP (unchanged) ──
+        const base    = '/students';
+        const action  = isSignUp ? '/signup' : '/login';
+        const url     = `http://localhost:5000${base}${action}`;
+        const payload = isSignUp
+          ? { name: name.trim(), email: email.trim(), password }
+          : { email: email.trim(), password };
+
+        // ---- BACKEND READY: uncomment when backend is ready ----
+        // const response = await fetch(url, {
+        //   method: 'POST',
+        //   body: JSON.stringify(payload),
+        //   headers: { 'content-type': 'application/json' },
+        //   credentials: 'include',
+        // });
+        // const responseJson = await response.json();
+        // if (!response.ok) {
+        //   throw new Error(responseJson.message || 'Something went wrong');
+        // }
+        // const userData = {
+        //   name: responseJson.student?.name || email.split('@')[0],
+        //   role,
+        // };
+        // ---- END BACKEND BLOCK ----
+
+        // ---- DUMMY MODE (delete when backend is ready) ----
+        const userData = {
+          name: isSignUp ? name.trim() : email.split('@')[0],
+          role,
+        };
+        // ---- END DUMMY MODE ----
+
+        localStorage.setItem('userData', JSON.stringify(userData));
+        onLogin(userData);
+        navigate('/dashboard/student');
+      }
 
     } catch (err) {
-      console.log('error in Login/handleSubmit:');
-      console.log(err);
+      console.log('error in Login/handleSubmit:', err);
       setApiError(err.message || 'Could not connect to server. Please try again.');
     } finally {
       setLoading(false);
@@ -139,7 +209,6 @@ const userData = {
               <p>{isSignUp ? 'Join the platform to get started' : 'Welcome back! Enter your details'}</p>
             </div>
 
-            {/* API error banner */}
             {apiError && (
               <div style={{
                 background: '#fee2e2', color: '#dc2626',
@@ -151,6 +220,8 @@ const userData = {
             )}
 
             <form onSubmit={handleSubmit}>
+
+              {/* Name — shown for all signups */}
               {isSignUp && (
                 <div className="form-group">
                   <label>Full Name</label>
@@ -166,6 +237,7 @@ const userData = {
                 </div>
               )}
 
+              {/* Email */}
               <div className="form-group">
                 <label>Email Address</label>
                 <div className="input-wrapper">
@@ -179,6 +251,7 @@ const userData = {
                 </div>
               </div>
 
+              {/* Password */}
               <div className="form-group">
                 <label>Password</label>
                 <div className="input-wrapper">
@@ -199,20 +272,43 @@ const userData = {
                 </div>
               </div>
 
+              {/* Department — only for teacher signup */}
+              {role === 'teacher' && isSignUp && (
+                <div className="form-group">
+                  <label>Department</label>
+                  <div className="input-wrapper">
+                    <UserCheck size={18} />
+                    <div className="select-wrapper">
+                      <select
+                        value={department}
+                        className={department ? 'selected' : ''}
+                        onChange={(e) => { setDepartment(e.target.value); setApiError(''); }}
+                      >
+                        <option value="">Select your department</option>
+                        {TEACHER_DEPARTMENTS.map((d) => (
+                          <option key={d} value={d}>{d}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Role selector */}
               <div className="form-group">
                 <label>Role</label>
                 <div className="role-selector">
                   <button
                     type="button"
                     className={`role-btn ${role === 'student' ? 'active' : ''}`}
-                    onClick={() => setRole('student')}
+                    onClick={() => { setRole('student'); setDepartment(''); setApiError(''); }}
                   >
                     <GraduationCap size={20} className="role-icon" /> Student
                   </button>
                   <button
                     type="button"
                     className={`role-btn ${role === 'teacher' ? 'active' : ''}`}
-                    onClick={() => setRole('teacher')}
+                    onClick={() => { setRole('teacher'); setApiError(''); }}
                   >
                     <UserCheck size={20} className="role-icon" /> Teacher
                   </button>
@@ -231,7 +327,7 @@ const userData = {
                 <button
                   type="button"
                   className="toggle-btn"
-                  onClick={() => { setIsSignUp(!isSignUp); setApiError(''); }}
+                  onClick={() => { setIsSignUp(!isSignUp); setApiError(''); setDepartment(''); }}
                 >
                   {isSignUp ? 'Log In' : 'Sign Up'}
                 </button>
@@ -246,61 +342,104 @@ const userData = {
 
 // import React, { useState, useContext } from 'react';
 // import { Link, useNavigate } from 'react-router-dom';
-// import { BookOpen, Mail, Lock, ArrowRight, Eye, EyeOff, GraduationCap, UserCheck } from 'lucide-react';
+// import {
+//   BookOpen, Mail, Lock, ArrowRight,
+//   Eye, EyeOff, GraduationCap, UserCheck
+// } from 'lucide-react';
 // import './Login.css';
 // import StudentContext from '../contexts/student/StudentContext';
 // import TeacherContext from '../contexts/teacher/TeacherContext';
 
 // export default function Login({ onLogin }) {
-//   const [isSignUp, setIsSignUp] = useState(true);
-//   const [name, setName] = useState(''); // User ka naam store karne ke liye
+//   // ── default is LOGIN (isSignUp = false), as your friend asked ──
+//   const [isSignUp, setIsSignUp]       = useState(false);
+//   const [name, setName]               = useState('');
 //   const [showPassword, setShowPassword] = useState(false);
-//   const [role, setRole] = useState('student');
+//   const [role, setRole]               = useState('student');
+//   const [email, setEmail]             = useState('');
+//   const [password, setPassword]       = useState('');
+//   const [loading, setLoading]         = useState(false);
+//   const [apiError, setApiError]       = useState('');
 
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
+//   const navigate = useNavigate();
 
-//   const navigate = useNavigate(); // Initialize navigate
-
-//   const { updateStudentFromStorage } = useContext(StudentContext);
-//   const { updateTeacherFromStorage } = useContext(TeacherContext);
-
-//   const handleSubmit = (e) => {
+//   const handleSubmit = async (e) => {
 //     e.preventDefault();
+//     setApiError('');
 
-//     // Name check (only for signup)
-//     if (isSignUp && (!name || name.trim() === "")) {
-//         alert("Please enter your Full Name!");
-//         return;
+//     // ── Basic frontend validation ──
+//     if (isSignUp && (!name || name.trim() === '')) {
+//       setApiError('Please enter your Full Name!');
+//       return;
 //     }
-
-//     // Email check
-//     if (!email || email.trim() === "") {
-//         alert("Please enter your Email!");
-//         return;
+//     if (!email || email.trim() === '') {
+//       setApiError('Please enter your Email!');
+//       return;
 //     }
-
-//     // Password check
-//     if (!password || password.trim() === "") {
-//         alert("Please enter your Password!");
-//         return;
+//     if (!password || password.trim() === '') {
+//       setApiError('Please enter your Password!');
+//       return;
 //     }
-
-//     // Password length check
 //     if (password.length < 6) {
-//         alert("Password must be at least 6 characters!");
-//         return;
+//       setApiError('Password must be at least 6 characters!');
+//       return;
 //     }
 
-//     const userData = {
-//         name: isSignUp ? name.trim() : email.split('@')[0], // agar signin hai toh email se naam nikalo
-//         role: role
-//     };
+//     setLoading(true);
 
-//     localStorage.setItem('userData', JSON.stringify(userData));
-//     onLogin(userData);
-//     navigate(role === 'teacher' ? '/dashboard/teacher' : '/dashboard/student');
+//     try {
+//       // ── Pick the right endpoint based on role + action ──
+//       // Teacher routes are separate (/teachers/...), student routes are (/students/...)
+//       // ⚠️ Confirm teacher base route with your friend — using /teachers/ here
+//       const base     = role === 'student' ? '/students' : '/teachers';
+//       const action   = isSignUp ? '/signup' : '/login';
+//       const url      = `http://localhost:5000${base}${action}`;
+
+//       // ── Build payload ──
+//       // Login needs only email + password
+//       // Signup for teacher needs name, email, password, department (check with friend)
+//       // Signup for student is handled in Upload.jsx separately (not here)
+//       const payload = isSignUp
+//         ? { name: name.trim(), email: email.trim(), password }
+//         : { email: email.trim(), password };
+
+//       // ---- BACKEND READY: uncomment this block when backend is ready ----
+// // const response = await fetch(url, {
+// //     method:      'POST',
+// //     body:        JSON.stringify(payload),
+// //     headers:     { 'content-type': 'application/json' },
+// //     credentials: 'include',
+// // });
+// // const responseJson = await response.json();
+// // if (!response.ok) {
+// //     throw new Error(responseJson.message || 'Something went wrong');
+// // }
+// // const userData = {
+// //     name: responseJson.student?.name || responseJson.teacher?.name || email.split('@')[0],
+// //     role,
+// // };
+// // ---- END BACKEND BLOCK ----
+
+// // ---- DUMMY LOGIN (delete this when backend is ready) ----
+// const userData = {
+//     name: isSignUp ? name.trim() : email.split('@')[0],
+//     role,
 // };
+// // ---- END DUMMY LOGIN ----
+
+//       localStorage.setItem('userData', JSON.stringify(userData));
+
+//       onLogin(userData);
+//       navigate(role === 'teacher' ? '/dashboard/teacher' : '/dashboard/student');
+
+//     } catch (err) {
+//       console.log('error in Login/handleSubmit:');
+//       console.log(err);
+//       setApiError(err.message || 'Could not connect to server. Please try again.');
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 
 //   return (
 //     <div className="login-page">
@@ -342,13 +481,29 @@ const userData = {
 //               <p>{isSignUp ? 'Join the platform to get started' : 'Welcome back! Enter your details'}</p>
 //             </div>
 
+//             {/* API error banner */}
+//             {apiError && (
+//               <div style={{
+//                 background: '#fee2e2', color: '#dc2626',
+//                 padding: '10px 14px', borderRadius: '8px',
+//                 marginBottom: '16px', fontSize: '14px'
+//               }}>
+//                 ⚠️ {apiError}
+//               </div>
+//             )}
+
 //             <form onSubmit={handleSubmit}>
 //               {isSignUp && (
 //                 <div className="form-group">
 //                   <label>Full Name</label>
 //                   <div className="input-wrapper">
 //                     <Mail size={18} />
-//                     <input type="text" placeholder="Enter your full name" value={name} required onChange={(e) => setName(e.target.value)} />
+//                     <input
+//                       type="text"
+//                       placeholder="Enter your full name"
+//                       value={name}
+//                       onChange={(e) => { setName(e.target.value); setApiError(''); }}
+//                     />
 //                   </div>
 //                 </div>
 //               )}
@@ -357,7 +512,12 @@ const userData = {
 //                 <label>Email Address</label>
 //                 <div className="input-wrapper">
 //                   <Mail size={18} />
-//                   <input type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+//                   <input
+//                     type="email"
+//                     placeholder="you@example.com"
+//                     value={email}
+//                     onChange={(e) => { setEmail(e.target.value); setApiError(''); }}
+//                   />
 //                 </div>
 //               </div>
 
@@ -365,7 +525,12 @@ const userData = {
 //                 <label>Password</label>
 //                 <div className="input-wrapper">
 //                   <Lock size={18} />
-//                   <input type={showPassword ? 'text' : 'password'} placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)} />
+//                   <input
+//                     type={showPassword ? 'text' : 'password'}
+//                     placeholder="Enter your password"
+//                     value={password}
+//                     onChange={(e) => { setPassword(e.target.value); setApiError(''); }}
+//                   />
 //                   <button
 //                     type="button"
 //                     className="eye-btn"
@@ -384,20 +549,20 @@ const userData = {
 //                     className={`role-btn ${role === 'student' ? 'active' : ''}`}
 //                     onClick={() => setRole('student')}
 //                   >
-//                     <GraduationCap size={20} className="role-icon"/>    Student
+//                     <GraduationCap size={20} className="role-icon" /> Student
 //                   </button>
 //                   <button
 //                     type="button"
 //                     className={`role-btn ${role === 'teacher' ? 'active' : ''}`}
 //                     onClick={() => setRole('teacher')}
 //                   >
-//                     <UserCheck size={20} className="role-icon"/>   Teacher
+//                     <UserCheck size={20} className="role-icon" /> Teacher
 //                   </button>
 //                 </div>
 //               </div>
 
-//               <button type="submit" className="submit-btn">
-//                 <span>{isSignUp ? 'Create Account' : 'Sign In'}</span>
+//               <button type="submit" className="submit-btn" disabled={loading}>
+//                 <span>{loading ? 'Please wait...' : isSignUp ? 'Create Account' : 'Sign In'}</span>
 //                 <ArrowRight size={18} />
 //               </button>
 //             </form>
@@ -408,7 +573,7 @@ const userData = {
 //                 <button
 //                   type="button"
 //                   className="toggle-btn"
-//                   onClick={() => setIsSignUp(!isSignUp)}
+//                   onClick={() => { setIsSignUp(!isSignUp); setApiError(''); }}
 //                 >
 //                   {isSignUp ? 'Log In' : 'Sign Up'}
 //                 </button>

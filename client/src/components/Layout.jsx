@@ -57,17 +57,6 @@ export default function Layout({ user }) {
           })}
         </nav>
 
-        <div className="sidebar-footer">
-          {/* Logout: userData clear karega */}
-          <Link
-            to="/login"
-            className="nav-item logout-btn"
-            onClick={() => localStorage.removeItem('userData')}
-          >
-            <LogOut size={20} />
-            {sidebarOpen && <span>Logout</span>}
-          </Link>
-        </div>
       </aside>
 
       {/* Main Content Area */}
@@ -99,9 +88,29 @@ export default function Layout({ user }) {
             <div className="tooltip-container">
               <button
                 className="red-power-btn"
-                onClick={() => {
-                  localStorage.removeItem('userData'); // Memory clear karo
-                  window.location.href = '/login';    // Forcefully login par bhejo
+                onClick={async () => {
+                  try {
+                    // ---- BACKEND READY: uncomment when backend is running ----
+                    // const role = user?.role;
+                    // const url = role === 'teacher'
+                    //   ? "https://student-performance-analysis-backend-engk.onrender.com/api/teacher/logout"
+                    //   : "https://student-performance-analysis-backend-engk.onrender.com/api/student/logout";
+                    // await fetch(url, {
+                    //   method: "get",
+                    //   credentials: "include"
+                    // });
+                    // ---- END BACKEND BLOCK ----
+
+                    // ---- DUMMY MODE (delete when backend is ready) ----
+                    console.log("Logging out...");
+                    // ---- END DUMMY MODE ----
+
+                  } catch (err) {
+                    console.log("Logout error:", err);
+                  } finally {
+                    localStorage.removeItem('userData');
+                    window.location.href = '/login';
+                  }
                 }}
               >
                 <Power size={18} strokeWidth={2.5} /> {/* Power Icon */}

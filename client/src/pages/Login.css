@@ -313,3 +313,33 @@
     padding: 28px;
   }
 }
+
+.select-wrapper {
+  width: 100%;
+  position: relative;
+}
+
+.select-wrapper select {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-muted, #a0a0a0);
+  font-size: 0.95rem;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.select-wrapper select.selected {
+  color: var(--text-primary, #ffffff);
+}
+
+.select-wrapper select option {
+  background-color: #1a4a2e;
+  color: #f0c040;
+}
+
+.select-wrapper select option:first-child {
+  color: #a0a0a0;
+}
