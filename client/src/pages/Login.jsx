@@ -5,7 +5,7 @@ import {
   Eye, EyeOff, GraduationCap, UserCheck
 } from 'lucide-react';
 import './Login.css';
-
+import TeacherContext from '../contexts/teacher/TeacherContext';
 const TEACHER_DEPARTMENTS = [
   "Electronics",
   "Computer Science",
@@ -15,6 +15,7 @@ const TEACHER_DEPARTMENTS = [
 ];
 
 export default function Login({ onLogin }) {
+  let {getTeacherData} = useContext(TeacherContext);
   const [isSignUp, setIsSignUp]         = useState(false);
   const [name, setName]                 = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -81,7 +82,14 @@ export default function Login({ onLogin }) {
 
       const userData = { name: responseJson.teacher?.name || name.trim(), role };
       localStorage.setItem('userData', JSON.stringify(userData));
-      onLogin(userData);
+      // onLogin(userData);
+      getTeacherData(userData);
+      const studentsRes = await fetch("https://student-performance-analysis-backend-engk.onrender.com/api/teacher/students",{
+            method:"get",
+            credentials:"include"
+          })
+      const studentResJson = await studentsRes.json();
+      console.log(studentResJson);
       navigate('/dashboard/teacher');
 
     } else {

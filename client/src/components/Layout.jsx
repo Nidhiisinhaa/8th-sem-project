@@ -95,10 +95,13 @@ export default function Layout({ user }) {
                       ? "https://student-performance-analysis-backend-engk.onrender.com/api/teacher/logout"
                       : "https://student-performance-analysis-backend-engk.onrender.com/api/student/logout";
 
-                    await fetch(url, {
+                      const response = await fetch(url, {
                       method: "get",
                       credentials: "include"
                     });
+                    const res = await response.json()
+
+                    console.log (res)
 
                   } catch (err) {
                     console.log("Logout error:", err);
