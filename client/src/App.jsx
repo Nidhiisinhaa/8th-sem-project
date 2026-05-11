@@ -47,9 +47,9 @@ function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Router>
+        <EduPredictChatbot user={user} />
       </TeacherState>
     </StudentState>
-    <EduPredictChatbot />
   </>
 
   );

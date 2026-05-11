@@ -60,7 +60,8 @@ function MessageBubble({ msg }) {
 
 // ─── Main Chatbot Component ──────────────────────────────────────────────────
 
-export default function EduPredictChatbot() {
+export default function EduPredictChatbot({user}) {
+
   const [open, setOpen]         = useState(false);
   const [started, setStarted]   = useState(false);
   const [messages, setMessages] = useState([]);
@@ -68,13 +69,16 @@ export default function EduPredictChatbot() {
   const [loading, setLoading]   = useState(false);
   const bottomRef = useRef(null);
 
+ 
   const now = () =>
     new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
-
+   if (!user) {
+    return null;
+  }
   const addMessage = (text, from) => {
     setMessages((prev) => [
       ...prev,
