@@ -10,14 +10,14 @@
 /* copy buttons */
 .copy-container {
   position: relative;
-  width: 500px;
+  width: 300px;
 
   padding: 16px 60px 16px 16px;
 
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   border-radius: 10px;
 
-  background: #111827;
+  background: #073e05;
   color: white;
 }
 
@@ -39,7 +39,7 @@
 
   cursor: pointer;
 
-  background: #2563eb;
+  background: #1e2130;
   color: white;
 }
 /* ==================== STUDENTS TABLE ==================== */
