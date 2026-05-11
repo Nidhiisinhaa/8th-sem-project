@@ -205,7 +205,7 @@
   flex-direction: column;
   scrollbar-width: thin;
   scrollbar-color: #1a4d2a #0a1f12;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 }
 
 /* ─── Message Bubbles ───────────────────────────────────────────── */
@@ -218,15 +218,15 @@
 .edu-msg-row.bot  { justify-content: flex-start; }
 .edu-msg-row.user { justify-content: flex-end; }
 
-/* .edu-bubble {
+.edu-bubble {
   max-width: 85%;
   padding: 10px 14px;
   font-size: 13.5px;
   line-height: 1.65;
   color: #e6f4ec;
-} */
+}
 
-.edu-bubble {
+/* .edu-bubble {
   max-width: 85%;
   padding: 10px 14px;
   font-size: 13.5px;
@@ -236,7 +236,7 @@
   overflow-wrap: break-word;
   white-space: pre-wrap;
   min-width: 0;
-}
+} */
 
 .edu-bubble.bot {
   border-radius: 4px 16px 16px 16px;
