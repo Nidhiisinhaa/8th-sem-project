@@ -70,10 +70,10 @@ export default function Layout({ user }) {
             <button className="menu-toggle" onClick={() => setSidebarOpen(!sidebarOpen)}>
               {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
-            <div className="search-box">
+            {/* <div className="search-box">
               <Search size={16} />
               <input type="text" placeholder="Search students, reports..." />
-            </div>
+            </div> */}
           </div>
           <div className="topbar-right">
             <button className="notif-btn">
