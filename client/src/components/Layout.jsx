@@ -1,4 +1,4 @@
-import { Outlet, Link, useLocation, Navigate } from 'react-router-dom';
+import { Outlet, Link, useLocation, Navigate ,useNavigate} from 'react-router-dom';
 import {
   LayoutDashboard, Users, Upload, BarChart3,
   GraduationCap, LogOut, Menu, X, Bell, Search,
@@ -16,6 +16,7 @@ const sidebarLinks = [
 
 
 export default function Layout({ user }) {
+  const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
 
@@ -110,7 +111,8 @@ export default function Layout({ user }) {
                     console.log("Logout error:", err);
                   } finally {
                     localStorage.removeItem('userData');
-                    window.location.href = '/login';
+                    // window.location.href = '/login';
+                    navigate("/login");
                   }
                 }}
               >
