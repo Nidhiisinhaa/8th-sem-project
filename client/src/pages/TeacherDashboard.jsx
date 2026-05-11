@@ -34,6 +34,25 @@ export default function TeacherDashboard({ user }) {
         );
     }
 
+    const text =teacherData?.teacher?._id;
+
+    const [copied, setCopied] = useState(false);
+
+    const handleCopy = async () => {
+        try {
+        await navigator.clipboard.writeText(text);
+
+        setCopied(true);
+
+        setTimeout(() => {
+            setCopied(false);
+        }, 2000);
+
+        } catch (err) {
+        console.log("Copy failed:", err);
+        }
+    };
+
     useEffect(()=>{
         let caller = async()=>{
             let teacherRes = await fetch("https://student-performance-analysis-backend-engk.onrender.com/api/teacher/teacher", {
@@ -66,8 +85,18 @@ export default function TeacherDashboard({ user }) {
                         Welcome, {teacherData?.teacher?.name || 'Teacher'} <br /> {teacherData?.teacher?.department} 
                     </p>
                     <p className="page-subtitle">
-                       <i> ~{teacherData?.teacher?._id}</i>
+                        <div className="copy-container">
+                            <p className="copy-text">{text}</p>
+
+                            <button
+                                className="copy-btn"
+                                onClick={handleCopy}
+                            >
+                                {copied ? "Copied!" : "Copy"}
+                            </button>
+                        </div>
                     </p>
+                    
                 </div>
 
             </div>

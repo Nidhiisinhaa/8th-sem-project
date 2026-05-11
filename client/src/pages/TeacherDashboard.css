@@ -7,7 +7,41 @@
   color: var(--accent-red) !important;
   border-color: rgba(239, 68, 68, 0.2) !important;
 }
+/* copy buttons */
+.copy-container {
+  position: relative;
+  width: 500px;
 
+  padding: 16px 60px 16px 16px;
+
+  border: 1px solid #ccc;
+  border-radius: 10px;
+
+  background: #111827;
+  color: white;
+}
+
+.copy-text {
+  margin: 0;
+  word-break: break-word;
+}
+
+.copy-btn {
+  position: absolute;
+
+  top: 12px;
+  right: 12px;
+
+  border: none;
+  border-radius: 6px;
+
+  padding: 6px 12px;
+
+  cursor: pointer;
+
+  background: #2563eb;
+  color: white;
+}
 /* ==================== STUDENTS TABLE ==================== */
 .students-table-card {
   margin-top: 0;
