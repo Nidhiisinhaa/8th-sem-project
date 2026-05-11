@@ -76,7 +76,7 @@ const StudentState = (props) => {
     // }, []);
 
     return (
-        <StudentContext.Provider value={{ studentData, loading, error, getStudentData }}>
+        <StudentContext.Provider value={{ studentData, loading, error}}>
             {props.children}
         </StudentContext.Provider>
     );

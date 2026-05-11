@@ -78,7 +78,7 @@ const ProgressBar = ({ label, current, recommended, overall_avg, color = "#4e7cf
 // ── Main Component ────────────────────────────────────────────────────
 export default function StudentDashboard({ user, setUser}) {
 
-    const { studentData: ctxData, loading, error, getStudentData } = useContext(StudentContext);
+    const { studentData: ctxData, loading, error } = useContext(StudentContext);
 
     useEffect(() => {
         const callBack = async () => {
@@ -112,12 +112,7 @@ export default function StudentDashboard({ user, setUser}) {
 
     if (loading && !studentData) return <div className="loading">Loading Dashboard...</div>;
 
-    if (error && !studentData) return (
-        <div className="error">
-            <p>{error}</p>
-            <button onClick={getStudentData}>Retry</button>
-        </div>
-    );
+    if (error && !studentData) return (null);
 
     if (!studentData) return <div className="loading">Loading Dashboard Data...</div>;
 
