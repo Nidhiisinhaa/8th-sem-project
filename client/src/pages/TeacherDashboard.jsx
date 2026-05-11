@@ -82,7 +82,7 @@ export default function TeacherDashboard({ user }) {
                 <div>
                     <h1>Teacher Dashboard</h1>
                     <p className="page-subtitle">
-                        Welcome, <b> {teacherData?.teacher?.name || 'Teacher'} </b>
+                        Welcome, <b> {teacherData?.teacher?.name || 'Teacher'}! </b>
                     </p>
                     <p className="page-subtitle">
                       ({teacherData?.teacher?.department}) 
