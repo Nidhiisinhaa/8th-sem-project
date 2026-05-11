@@ -41,7 +41,6 @@ function App() {
                 <Route path="student" element={<StudentDashboard user={user} />} />
                 <Route path="teacher" element={<TeacherDashboard user={user} />} />
                 <Route path="upload" element={<UploadPage setUser={setUser} />} />
-                <Route path="analytics" element={<Analytics />} />
               </Route>
             </Route>
 

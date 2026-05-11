@@ -11,7 +11,6 @@ const sidebarLinks = [
   { path: '/dashboard/student', label: 'Student Dashboard', icon: GraduationCap, roles: ['student'] },
   { path: '/dashboard/teacher', label: 'Teacher Dashboard', icon: Users, roles: ['teacher'] },
   { path: '/dashboard/upload', label: 'Upload Data', icon: Upload, roles: ['student'] }, // Teacher only fix
-  { path: '/dashboard/analytics', label: 'Analytics', icon: BarChart3, roles: ['student', 'teacher'] },
 ];
 
 

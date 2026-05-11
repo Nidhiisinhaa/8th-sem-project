@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { ArrowRight } from "lucide-react";
 import "./EduPedictChatbot.css";
 import mascotImg from "../assets/mascot.png";
 
@@ -250,14 +251,16 @@ export default function EduPredictChatbot() {
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                 />
-                <button
+                {/* <button
                   className="edu-send-btn"
                   onClick={handleSend}
                   disabled={loading}
                   title="Send"
                 >
                   ➤
-                </button>
+                </button> */}
+                <ArrowRight disabled={loading} className="edu-send-btn"
+                  title="Send" onClick={handleSend} size={18} />
               </div>
             </>
           )}
