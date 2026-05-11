@@ -137,7 +137,7 @@ import {
   ChevronRight, BookOpen, Power
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import './Layout.css';
+import './Layout2.css';
 
 const sidebarLinks = [
   { path: '/dashboard/student', label: 'Student Dashboard', icon: GraduationCap, roles: ['student'] },
