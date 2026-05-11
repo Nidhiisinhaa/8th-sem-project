@@ -75,7 +75,6 @@ export default function Landing() {
         </Link>
         <div className="nav-links">
           <a href="#features">Features</a>
-          <a href="#stats">Results</a>
           <Link to="/login" className="nav-login-btn">
             Login <ArrowRight size={16} />
           </Link>

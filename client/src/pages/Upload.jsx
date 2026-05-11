@@ -294,7 +294,7 @@ export default function Upload({setUser}) {
               <input
                 className={`up-input ${errors.mental_health_score ? "up-input-err" : ""}`}
                 type="number" name="mental_health_score" value={form.mental_health_score}
-                onChange={handleChange} placeholder="0 = very poor, 10 = excellent" min={1} max={10}
+                onChange={handleChange} placeholder="1 = very poor, 10 = excellent" min={1} max={10}
               />
               {errors.mental_health_score && <span className="up-err">{errors.mental_health_score}</span>}
             </div>
@@ -331,7 +331,7 @@ export default function Upload({setUser}) {
           )}
 
           <button type="submit" className="up-btn-primary" disabled={loading}>
-            {loading ? "Saving..." : isEditing ? "💾 Save Changes" : "💾 Save"}
+            {loading ? "Saving..." : isEditing ? "Save Changes" : "Save"}
           </button>
         </div>
 

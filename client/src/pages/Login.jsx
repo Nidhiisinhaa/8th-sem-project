@@ -348,7 +348,7 @@ export default function Login({ onLogin }) {
               {/* Teacher ID — student signup only */}
               {role === 'student' && isSignUp && (
                 <div className="form-group">
-                  <label>Teacher ID</label>
+                  <label>Teacher ID (as provided by the Teacher)</label>
                   <div className="input-wrapper">
                     <Mail size={18} />
                     <input
