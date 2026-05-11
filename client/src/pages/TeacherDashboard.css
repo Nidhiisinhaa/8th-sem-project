@@ -68,11 +68,15 @@
 
 .table-wrapper {
   overflow-x: auto;
+  /* Add y */
+   max-width: 100%;
 }
 
 .students-table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 600px;
+
 }
 
 .students-table th {

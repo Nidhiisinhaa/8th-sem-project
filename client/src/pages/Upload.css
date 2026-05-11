@@ -5,6 +5,10 @@
   padding: 32px 40px;
   background: #081510;
   color: #e6f4ec;
+  /* ADD y */
+  max-width: 100%;     /* ADD THIS */
+  overflow-x: hidden;  /* ADD THIS */
+  box-sizing: border-box;  /* ADD THIS */
 }
 
 /* ─── Page Header ───────────────────────────────────────────────── */
@@ -73,6 +77,8 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 18px 24px;
+  /* ADD y */
+  min-width: 0;   /* ADD THIS */
 }
 
 @media (max-width: 900px) {

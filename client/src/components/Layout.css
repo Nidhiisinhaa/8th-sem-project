@@ -137,10 +137,15 @@
   flex: 1;
   min-height: 100vh;
   transition: margin-left var(--transition-slow);
+  /* ADD y */
+  width: calc(100% - var(--sidebar-width)); 
+  overflow-x: hidden;     
 }
 
 .main-area.expanded {
   margin-left: 72px;
+  /* ADD y*/
+  width: calc(100% - 72px); 
 }
 
 /* ==================== TOPBAR ==================== */
@@ -360,6 +365,8 @@
 
   .main-area {
     margin-left: 0;
+    /* ADD y */
+    width: 100%;
   }
 
   .search-box {
