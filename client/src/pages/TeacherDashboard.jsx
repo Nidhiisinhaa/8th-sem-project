@@ -34,7 +34,7 @@ export default function TeacherDashboard({ user }) {
         );
     }
 
-    const text =teacherData?.teacher?._id;
+    const text =teacherData?.teacher?._id || "NA";
 
     const [copied, setCopied] = useState(false);
 
