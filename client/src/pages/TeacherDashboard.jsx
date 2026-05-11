@@ -185,7 +185,7 @@ export default function TeacherDashboard({ user }) {
                         <tbody>
                             {studentData?.students?.map((s) =>
                                 {
-                                let riskScore = s.result.predictions.risk_probability*10;
+                                let riskScore = s?.result?.predictions?.risk_probability*10;
                                 return(
                                 <tr key={s._id}>
                                     <td>
@@ -201,7 +201,7 @@ export default function TeacherDashboard({ user }) {
                                             <div className="risk-bar-bg">
                                                 <div
                                                     className={`risk-bar-fill low`}
-                                                    style={{ width: `${riskScore}` }} //risk
+                                                    style={{ width: `${riskScore || 'null'}` }} //risk
                                                 ></div>
                                             </div>
                                             <span className={`risk-value ${s.status}`}>10</span>
