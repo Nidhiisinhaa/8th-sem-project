@@ -6,7 +6,7 @@ import mascotImg from "../assets/mascot.png";
 // ─── Static Knowledge Base ──────────────────────────────────────────────────
 
 const QUICK_BUTTONS = [
-  { id: "study",         label: " Ways to Study" },
+  { id: "methods",         label: " Ways to Study" },
   { id: "grade",         label: " Grade Prediction Logic" },
   { id: "risk",          label: " Risk Score" },
   { id: "contact",       label: " Contact Us" },
@@ -14,7 +14,7 @@ const QUICK_BUTTONS = [
 ];
 
 const STATIC_RESPONSES = {
-  study: `Here are some proven methods to study better:\n\n• **Spaced Repetition** – Review material at increasing intervals (e.g., after 1 day, 3 days, 1 week) to boost long-term retention.\n• **Active Recall** – Test yourself instead of re-reading. Use flashcards, practice questions, or explain concepts out loud.\n• **Pomodoro Technique** – Study in focused 25-minute blocks, followed by a 5-minute break. After 4 cycles, take a longer break.\n• **The Feynman Technique** – Teach the concept in simple words as if explaining to a 10-year-old — gaps in understanding become obvious quickly.\n• **Mind Mapping** – Visually organize topics in a branching diagram to see connections between ideas.\n• **Interleaving** – Mix different subjects or problem types in one session instead of massing one topic. Improves discrimination between concepts.`,
+  methods: `Here are some proven methods to study better:\n\n• **Spaced Repetition** – Review material at increasing intervals (e.g., after 1 day, 3 days, 1 week) to boost long-term retention.\n• **Active Recall** – Test yourself instead of re-reading. Use flashcards, practice questions, or explain concepts out loud.\n• **Pomodoro Technique** – Study in focused 25-minute blocks, followed by a 5-minute break. After 4 cycles, take a longer break.\n• **The Feynman Technique** – Teach the concept in simple words as if explaining to a 10-year-old — gaps in understanding become obvious quickly.\n• **Mind Mapping** – Visually organize topics in a branching diagram to see connections between ideas.\n• **Interleaving** – Mix different subjects or problem types in one session instead of massing one topic. Improves discrimination between concepts.`,
 
   grade: `EduPredict calculates your predicted grade using a combination of factors:\n\n• **Past Academic Performance (40%)** – Your historical scores, assignments, and quiz results form the strongest predictor of future performance.\n• **Current Attendance (25%)** – Consistent attendance correlates strongly with engagement and outcomes. Missing classes contributes to grade drops.\n• **Assignment Submission Rate (20%)** – Regular, on-time submissions indicate discipline and steady engagement with the material.\n• **Participation & Engagement (10%)** – Activity on the platform, forum participation, and in-class interactions are factored in.\n• **Recent Trend (5%)** – Whether your scores are improving or declining recently fine-tunes the final prediction.\n\nAll factors are weighted and fed into our ML model to produce a projected final grade with a confidence interval.`,
 
@@ -107,7 +107,7 @@ export default function EduPredictChatbot() {
     const lower = query.toLowerCase();
     let staticHit = null;
     if (lower.includes("study") || lower.includes("learn") || lower.includes("method"))
-      staticHit = "study";
+      staticHit = "methods";
     else if (lower.includes("grade") || lower.includes("predict"))
       staticHit = "grade";
     else if (lower.includes("risk"))
