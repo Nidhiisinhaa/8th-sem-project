@@ -11,7 +11,7 @@ import './App.css';
 import ProtectedRoute from './components/ProtectedRoute';
 import EduPredictChatbot from './components/EduPedictChatbot';
 
-// 1. Dono States ko import karo
+
 import StudentState from './contexts/student/StudentState';
 import TeacherState from './contexts/teacher/TeacherState';
 
