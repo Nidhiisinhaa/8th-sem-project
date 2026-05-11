@@ -17,11 +17,11 @@ const STATIC_RESPONSES = {
 
   grade: `EduPredict calculates your predicted grade using a combination of factors:\n\n• **Past Academic Performance (40%)** – Your historical scores, assignments, and quiz results form the strongest predictor of future performance.\n• **Current Attendance (25%)** – Consistent attendance correlates strongly with engagement and outcomes. Missing classes contributes to grade drops.\n• **Assignment Submission Rate (20%)** – Regular, on-time submissions indicate discipline and steady engagement with the material.\n• **Participation & Engagement (10%)** – Activity on the platform, forum participation, and in-class interactions are factored in.\n• **Recent Trend (5%)** – Whether your scores are improving or declining recently fine-tunes the final prediction.\n\nAll factors are weighted and fed into our ML model to produce a projected final grade with a confidence interval.`,
 
-  risk: `Your Risk Score is a number from 0–100 that indicates how likely you are to underperform or fail a course.\n\n• **0–30 (Low Risk 🟢)** – You're on track. Keep up the good work!\n• **31–60 (Moderate Risk 🟡)** – Some warning signs detected. Consider reviewing attendance or catching up on assignments.\n• **61–100 (High Risk 🔴)** – Immediate attention needed. The system will suggest specific interventions.\n\nThe score is recalculated weekly based on updated data such as attendance, recent scores, and submission patterns. Early alerts allow you — and your instructors — to act before it's too late.`,
+  risk: `Your Risk Score is a number from 0–100 that indicates how likely you are to underperform or fail a course.\n\n• **0–30 (Low Risk)** – You're on track. Keep up the good work!\n• **31–60 (Moderate Risk )** – Some warning signs detected. Consider reviewing attendance or catching up on assignments.\n• **61–100 (High Risk)** – Immediate attention needed. The system will suggest specific interventions.\n\nThe score is recalculated weekly based on updated data such as attendance, recent scores, and submission patterns. Early alerts allow you — and your instructors — to act before it's too late.`,
 
   concentration: `Struggling to focus? Here are evidence-backed ways to build better concentration:\n\n• **Single-Tasking** – Close extra tabs, put your phone on Do Not Disturb, and focus on only one task at a time.\n• **Environment Design** – Study in a clean, well-lit space. Keep your desk clutter-free. Your environment shapes your focus.\n• **Scheduled Breaks** – Short, intentional breaks prevent mental fatigue. Step outside or stretch briefly every 30–45 minutes.\n• **Digital Detox Hours** – Designate screen-free study windows, especially during deep work sessions.\n• **Sleep & Nutrition** – 7–8 hours of sleep dramatically improves memory consolidation. Stay hydrated and avoid heavy meals before studying.\n• **Background Sound** – Some students focus better with soft instrumental music or brown noise. Try apps like Brain.fm or a lo-fi playlist.`,
 
-  contact: `You can reach out to the EduPredict team through the following:\n\n📱 **Phone / WhatsApp**\n+91 88006 59769 (Nidhi Sinha)\n\n📧 **Email**\nedupredict@gmail.com\n\nWe typically respond within 24 hours on weekdays. For urgent queries, WhatsApp is the fastest way to reach us!`,
+  contact: `You can reach out to the EduPredict team through the following:\n\n **Phone / WhatsApp**\n+91 88006 59769 (Nidhi Sinha)\n\n **Email**\nedupredict@gmail.com\n\nWe typically respond within 24 hours on weekdays. For urgent queries, WhatsApp is the fastest way to reach us!`,
 };
 
 // ─── Message Renderer (bold support) ────────────────────────────────────────
@@ -127,7 +127,7 @@ export default function EduPredictChatbot() {
     // ── Friend's backend ──────────────────────────────────────────
     // When your friend deploys her API, add this to your .env file:
     //   VITE_CHATBOT_API_URL=https://her-api-url.com/query
-    const API_URL = import.meta.env?.VITE_CHATBOT_API_URL || null;
+    const API_URL = "https://chatbotai-snrs.onrender.com/chat";
 
     if (!API_URL) {
       setLoading(false);
@@ -142,10 +142,18 @@ export default function EduPredictChatbot() {
       const res  = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query }),
+        body: JSON.stringify({
+          message: query,
+          student_data: {
+            weekly_hours: 25,
+            weak_areas: ["Math"],
+            goal: "Exam prep"
+          }
+        }),
       });
       const data = await res.json();
-      const reply = data.answer || data.response || data.result || "I couldn't find an answer for that.";
+      console.log(data);
+      const reply = data?.response || "I couldn't find an answer for that.";
       setLoading(false);
       addMessage(reply, "bot");
     } catch {
@@ -185,7 +193,7 @@ export default function EduPredictChatbot() {
             <img src={mascotImg} alt="mascot" className="edu-header-img" />
             <div className="edu-header-text">
               <p className="edu-header-title">EduPredict Assistant</p>
-              <p className="edu-header-sub">🟢 Online — always here to help</p>
+              <p className="edu-header-sub"> Online — always here to help</p>
             </div>
             <button className="edu-close-btn" onClick={() => setOpen(false)}>✕</button>
           </div>

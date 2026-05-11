@@ -14,6 +14,8 @@ const sidebarLinks = [
   { path: '/dashboard/analytics', label: 'Analytics', icon: BarChart3, roles: ['student', 'teacher'] },
 ];
 
+
+
 export default function Layout({ user }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
@@ -21,6 +23,8 @@ export default function Layout({ user }) {
   // Role ko user object se nikal rahe hain
   const role = user?.role;
 
+  // console.log("user : ");
+  // console.log(user);
   // 4. Logic: Links filter karo current role ke hisaab se
   const filteredLinks = sidebarLinks.filter(link => link.roles.includes(role));
 
@@ -79,10 +83,10 @@ export default function Layout({ user }) {
             <div className="user-avatar">
               <div className="avatar-circle">
                 {/* Naam ka pehla letter dynamic */}
-                {user?.name?.charAt(0).toUpperCase() || 'U'}
+                {user?.teacher?.name?.charAt(0).toUpperCase() || user?.student?.name?.charAt(0).toUpperCase()  || 'U'}
               </div>
               {/* Yahan "Shweta" ki jagah dynamic name aayega */}
-              {sidebarOpen && <span className="user-name">{user?.name || 'User'}</span>}
+              {sidebarOpen && <span className="user-name">{user?.teacher?.name ||user?.student?.name ||'User'}</span>}
             </div>
             {/* NAYA LOGOUT BUTTON */}
             <div className="tooltip-container">

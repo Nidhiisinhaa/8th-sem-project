@@ -40,7 +40,7 @@ function App() {
                 <Route index element={<Navigate to={role === 'teacher' ? "teacher" : "student"} replace />} />
                 <Route path="student" element={<StudentDashboard user={user} />} />
                 <Route path="teacher" element={<TeacherDashboard user={user} />} />
-                <Route path="upload" element={<UploadPage />} />
+                <Route path="upload" element={<UploadPage setUser={setUser} />} />
                 <Route path="analytics" element={<Analytics />} />
               </Route>
             </Route>
