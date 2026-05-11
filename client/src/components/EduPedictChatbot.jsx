@@ -6,6 +6,7 @@ import mascotImg from "../assets/mascot.png";
 // ─── Static Knowledge Base ──────────────────────────────────────────────────
 
 const QUICK_BUTTONS = [
+  { id: "studying",         label: " Ways to Study" },
   { id: "grade",         label: " Grade Prediction Logic" },
   { id: "risk",          label: " Risk Score" },
   { id: "contact",       label: " Contact Us" },
