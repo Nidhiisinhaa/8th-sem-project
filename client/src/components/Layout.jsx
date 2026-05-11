@@ -15,7 +15,7 @@ const sidebarLinks = [
 
 
 
-export default function Layout({ user }) {
+export default function Layout({ user, setUser }) {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
@@ -104,7 +104,7 @@ export default function Layout({ user }) {
                       credentials: "include"
                     });
                     const res = await response.json()
-
+                    setUser(null);
                     console.log (res)
 
                   } catch (err) {

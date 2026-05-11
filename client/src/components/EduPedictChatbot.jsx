@@ -76,7 +76,8 @@ export default function EduPredictChatbot({user}) {
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
-   if (!user) {
+
+  if (!user) {
     return null;
   }
   const addMessage = (text, from) => {
