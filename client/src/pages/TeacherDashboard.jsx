@@ -161,13 +161,13 @@ export default function TeacherDashboard({ user }) {
             <div className="chart-card students-table-card animate-fade-in-up delay-3">
                 <div className="chart-header">
                     <h3><Users size={18} /> Student Performance Table</h3>
-                    <div className="table-actions">
+                    {/* <div className="table-actions">
                         <div className="table-search">
                             <Search size={15} />
                             <input type="text" placeholder="Search students..." />
                         </div>
                         <button className="filter-btn"><Filter size={15} /> Filter</button>
-                    </div>
+                    </div> */}
                 </div>
                 <div className="table-wrapper">
                     <table className="students-table">
