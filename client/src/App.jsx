@@ -6,7 +6,6 @@ import Layout from './components/Layout';
 import StudentDashboard from './pages/StudentDashboard';
 import TeacherDashboard from './pages/TeacherDashboard';
 import UploadPage from './pages/Upload';
-import Analytics from './pages/Analytics';
 import './App.css';
 import ProtectedRoute from './components/ProtectedRoute';
 import EduPredictChatbot from './components/EduPedictChatbot';

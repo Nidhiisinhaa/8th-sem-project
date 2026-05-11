@@ -130,9 +130,7 @@ export default function EduPredictChatbot({user}) {
       return;
     }
 
-    // ── Friend's backend ──────────────────────────────────────────
-    // When your friend deploys her API, add this to your .env file:
-    //   VITE_CHATBOT_API_URL=https://her-api-url.com/query
+   
     const API_URL = "https://chatbotai-snrs.onrender.com/chat";
 
     if (!API_URL) {
@@ -256,14 +254,7 @@ export default function EduPredictChatbot({user}) {
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                 />
-                {/* <button
-                  className="edu-send-btn"
-                  onClick={handleSend}
-                  disabled={loading}
-                  title="Send"
-                >
-                  ➤
-                </button> */}
+      
                 <ArrowRight disabled={loading} className="edu-send-btn"
                   title="Send" onClick={handleSend} size={18} />
               </div>

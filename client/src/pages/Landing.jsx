@@ -88,10 +88,7 @@ export default function Landing() {
         <div className="hero-bg-orb orb-2"></div>
         <div className="hero-bg-orb orb-3"></div>
 
-        {/* <div className="hero-badge animate-fade-in-up">
-          <Zap size={14} />
-          <span>Powered by Machine Learning</span>
-        </div> */}
+ 
         <br/>
         <br/>
 
@@ -106,10 +103,10 @@ export default function Landing() {
         </p>
 
         <div className="hero-actions animate-fade-in-up delay-3">
-          <Link to="/dashboard/student" className="btn-primary">
+          {/* <Link to="/dashboard/student" className="btn-primary">
             <span>View Demo</span>
             <ArrowRight size={18} />
-          </Link>
+          </Link> */}
           <Link to="/login" className="btn-secondary">
             <span>Get Started</span>
             <ChevronRight size={18} />

@@ -290,11 +290,11 @@ export default function Upload({setUser}) {
             </div>
 
             <div className="up-field">
-              <label className="up-label">Mental Health Score <span className="up-hint">(0–10)</span></label>
+              <label className="up-label">Mental Health Score <span className="up-hint">(1–10)</span></label>
               <input
                 className={`up-input ${errors.mental_health_score ? "up-input-err" : ""}`}
                 type="number" name="mental_health_score" value={form.mental_health_score}
-                onChange={handleChange} placeholder="0 = very poor, 10 = excellent" min={0} max={10}
+                onChange={handleChange} placeholder="0 = very poor, 10 = excellent" min={1} max={10}
               />
               {errors.mental_health_score && <span className="up-err">{errors.mental_health_score}</span>}
             </div>
