@@ -76,15 +76,34 @@ const ProgressBar = ({ label, current, recommended, overall_avg, color = "#4e7cf
 };
 
 // ── Main Component ────────────────────────────────────────────────────
-export default function StudentDashboard({ user }) {
+export default function StudentDashboard({ user, setUser}) {
 
     const { studentData: ctxData, loading, error, getStudentData } = useContext(StudentContext);
 
     useEffect(() => {
-        // Only hit authenticate API if user.student is not already available
-        if (!user?.student) {
-            getStudentData();
-        }
+        const callBack = async () => {
+            try {
+                const response = await fetch(
+                    "https://student-performance-analysis-backend-engk.onrender.com/api/student/authenticate",
+                    { method: "GET", credentials: "include" }
+                );
+
+                //  Check if response is actually OK before parsing
+                if (!response.ok) {
+                    console.warn("Auth failed:", response.status);
+                    return; // Don't corrupt user state
+                }
+
+                const jsonRes = await response.json();
+                setUser(prev => ({ ...prev, ...jsonRes }));
+
+            } catch (err) {
+                // ✅ Network errors caught here
+                console.error("Authentication error:", err);
+            }
+        };
+
+        callBack();
     }, []);
 
     // user prop shape: { role: "student", student: { input_data, result, name, rollNumber, ... } }

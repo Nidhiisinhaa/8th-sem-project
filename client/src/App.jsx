@@ -38,7 +38,7 @@ function App() {
             <Route element={<ProtectedRoute user={user} />}>
               <Route path="/dashboard" element={<Layout user={user} />}>
                 <Route index element={<Navigate to={role === 'teacher' ? "teacher" : "student"} replace />} />
-                <Route path="student" element={<StudentDashboard user={user} />} />
+                <Route path="student" element={<StudentDashboard user={user} setUser={setUser} />} />
                 <Route path="teacher" element={<TeacherDashboard user={user} />} />
                 <Route path="upload" element={<UploadPage setUser={setUser} />} />
               </Route>
