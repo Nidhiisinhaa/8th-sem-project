@@ -186,6 +186,7 @@ export default function TeacherDashboard({ user }) {
                             {studentData?.students?.map((s) =>
                                 {
                                 let riskScore = s?.result?.predictions?.risk_probability*10;
+                                console.log(riskScore);
                                 return(
                                 <tr key={s._id}>
                                     <td>
