@@ -106,7 +106,7 @@ export default function EduPredictChatbot() {
     // Keyword matching → static answers
     const lower = query.toLowerCase();
     let staticHit = null;
-    if (lower.includes("study") || lower.includes("learn") || lower.includes("method"))
+    if (lower.includes("methods") || lower.includes("learn") || lower.includes("method"))
       staticHit = "methods";
     else if (lower.includes("grade") || lower.includes("predict"))
       staticHit = "grade";
