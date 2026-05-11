@@ -185,7 +185,9 @@ export default function TeacherDashboard({ user }) {
                         <tbody>
                             {studentData?.students?.map((s) =>
                                 {
-                                let riskScore = s?.result?.predictions?.risk_probability*10;
+                                let raw = (s?.result?.predictions?.risk_probability);
+                                const riskScore = (raw != null && !isNaN(raw)) ? (raw * 100).toFixed(1) : 0;
+                                const riskClass = riskScore > 70 ? 'high' : riskScore > 40 ? 'medium' : 'low';
                                 console.log(riskScore);
                                 return(
                                 <tr key={s._id}>
@@ -201,16 +203,16 @@ export default function TeacherDashboard({ user }) {
                                         <div className="risk-cell">
                                             <div className="risk-bar-bg">
                                                 <div
-                                                    className={`risk-bar-fill low`}
-                                                    style={{ width: `${riskScore || 'null'}` }} //risk
+                                                    className={`risk-bar-fill ${riskClass}`}
+                                                    style={{ width: `${riskScore || 0}%` }} //risk
                                                 ></div>
                                             </div>
-                                            <span className={`risk-value ${s.status}`}>10</span>
+                                            <span className={`risk-value ${s.status}`}>{riskScore}</span>
                                             {/* s.risk */}
                                         </div>
                                     </td>
                                     <td>{s.input_data?.attendance_pct || "-"}</td>
-                                    <td><span className={`grade-badge low`}>{s.result?.predictions.predicted_grade || "-"}</span></td>
+                                    <td><span className={`grade-badge ${riskClass}`}>{s.result?.predictions.predicted_grade || "-"}</span></td>
                                     <td><strong>{s.result?.predictions?.predicted_score || "-"}</strong></td>
                                 </tr>
                             )})}
