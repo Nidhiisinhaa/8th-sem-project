@@ -76,10 +76,6 @@ export default function Layout({ user, setUser }) {
             </div> */}
           </div>
           <div className="topbar-right">
-            <button className="notif-btn">
-              <Bell size={20} />
-              <span className="notif-dot"></span>
-            </button>
             <div className="user-avatar">
               <div className="avatar-circle">
                 {/* Naam ka pehla letter dynamic */}

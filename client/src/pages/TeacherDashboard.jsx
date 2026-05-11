@@ -212,7 +212,7 @@ export default function TeacherDashboard({ user }) {
                                         </div>
                                     </td>
                                     <td>{s.input_data?.attendance_pct || "-"}</td>
-                                    <td><span className={`grade-badge ${riskClass}`}>{s.result?.predictions.predicted_grade || "-"}</span></td>
+                                    <td><span className={`grade-badge ${riskClass}`}>{s.result?.predictions?.predicted_grade || "-"}</span></td>
                                     <td><strong>{s.result?.predictions?.predicted_score || "-"}</strong></td>
                                 </tr>
                             )})}
