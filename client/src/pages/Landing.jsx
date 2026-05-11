@@ -64,7 +64,7 @@ const stats = [
   { value: '40%', label: 'Improvement Rate' }
 ];
 
-export default function Landing() {
+export default function Landing({user}) {
   return (
     <div className="landing">
       {/* Navbar */}
@@ -75,9 +75,16 @@ export default function Landing() {
         </Link>
         <div className="nav-links">
           <a href="#features">Features</a>
+          
+          {user?
+          <Link to={`/dashboard/${user?.role}`} className="nav-login-btn">
+            Menu <ArrowRight size={16} />
+          </Link>
+          :
           <Link to="/login" className="nav-login-btn">
             Login <ArrowRight size={16} />
           </Link>
+          }
         </div>
       </nav>
 

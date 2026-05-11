@@ -30,7 +30,7 @@ function App() {
         <Router>
           <Routes>
             {/* PUBLIC ROUTES */}
-            <Route path="/" element={<Landing />} />
+            <Route path="/" element={<Landing user={user} />} />
             <Route path="/login" element={<Login onLogin={setUser} />} />
 
             {/* SECURE ROUTES */}
