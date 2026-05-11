@@ -422,7 +422,7 @@ export default function StudentDashboard({ user, setUser}) {
 
             {/* Row 5: Field Suggestions */}
             <div className="bottom-row">
-                <div className="chart-card animate-fade-in-up delay-3" style={{ flex: 1 }}>
+                <div className="chart-card animate-fade-in-up delay-3" style={{ flex: 1 , marginBottom:"1rem"}}>
                     <div className="chart-header">
                         <h3><Zap size={18} /> Career Field Suggestions</h3>
                         <span className="chart-badge">{fieldSuggestions.length} paths identified</span>
