@@ -80,8 +80,7 @@ export default function EduPredictChatbot({user}) {
   if (!user) {
     return null;
   }
-  console.log("via chatbot")
-  console.log(user);
+
   const addMessage = (text, from) => {
     setMessages((prev) => [
       ...prev,
