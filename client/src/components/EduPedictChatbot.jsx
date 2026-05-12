@@ -146,8 +146,7 @@ export default function EduPredictChatbot({user}) {
 
     try {
       const weekly_hours = user?.student?.input_data?.study_hours_weekly || 25;
-      console.log("weekly_hours");
-      console.log(weekly_hours);
+  
       const res  = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
