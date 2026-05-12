@@ -23,7 +23,6 @@ function App() {
   const role = user?.role || '';
 
   return (
-    // 2. Puri App ko Student aur Teacher state se wrap karo
     <>
     <StudentState>
       <TeacherState>
