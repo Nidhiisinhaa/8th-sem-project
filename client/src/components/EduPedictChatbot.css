@@ -218,13 +218,7 @@
 .edu-msg-row.bot  { justify-content: flex-start; }
 .edu-msg-row.user { justify-content: flex-end; }
 
-/* .edu-bubble {
-  max-width: 85%;
-  padding: 10px 14px;
-  font-size: 13.5px;
-  line-height: 1.65;
-  color: #e6f4ec;
-} */
+
 
 .edu-bubble {
   max-width: 85%;

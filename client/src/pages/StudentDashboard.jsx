@@ -271,7 +271,7 @@ export default function StudentDashboard({ user, setUser}) {
 
             {/* Row 3: Study Simulations + Weak Areas */}
             <div className="charts-row">
-
+{/* 
                 <div className="chart-card animate-fade-in-up delay-2">
                     <div className="chart-header">
                         <h3><TrendingUp size={18} /> Study Hour Simulations</h3>
@@ -318,7 +318,7 @@ export default function StudentDashboard({ user, setUser}) {
                             </div>
                         </div>
                     )}
-                </div>
+                </div> */}
 
                 <div className="chart-card animate-fade-in-up delay-3">
                     <div className="chart-header">
